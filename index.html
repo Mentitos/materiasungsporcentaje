@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progreso de Carreras</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        h1, h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+
+        /* Ocultar vistas */
+        .hidden {
+            display: none;
+        }
+
+        /* --- Vista del Menú Principal --- */
+        #menu-carreras {
+            padding: 0 20px 20px 20px;
+        }
+
+        .seccion-carrera {
+            margin-bottom: 25px;
+        }
+
+        .seccion-carrera ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .seccion-carrera li a {
+            display: block;
+            padding: 12px 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .seccion-carrera li a:hover {
+            background-color: #e9f5ff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- Vista de Detalle de Carrera --- */
+        #detalle-carrera {
+            padding: 20px;
+        }
+
+        #btn-volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 18px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        #btn-volver:hover {
+            background-color: #5a6268;
+        }
+
+        /* Progreso */
+        #progreso-info {
+            margin-bottom: 20px;
+        }
+
+        #progreso-texto {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 24px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #progreso-barra {
+            height: 100%;
+            width: 0%;
+            background-color: #28a745;
+            transition: width 0.3s ease-out;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Lista de Materias */
+        #lista-materias {
+            list-style: none;
+            padding: 0;
+            max-height: 60vh;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .materia-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        .materia-item:last-child {
+            border-bottom: none;
+        }
+
+        .materia-item:hover {
+            background-color: #fcfcfc;
+        }
+
+        .materia-item input[type="checkbox"] {
+            margin-right: 12px;
+            /* Estilos para hacer el checkbox más grande y fácil de clickear */
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .materia-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .materia-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="menu-carreras">
+            <h1>Progreso de Carreras</h1>
+
+            <div class="seccion-carrera" id="seccion-ingenieria">
+                <h2>Ingeniería</h2>
+                <ul id="lista-ingenieria"></ul>
+            </div>
+            
+            <div class="seccion-carrera" id="seccion-licenciatura">
+                <h2>Licenciatura</h2>
+                <ul id="lista-licenciatura"></ul>
+            </div>
+            
+            <div class="seccion-carrera" id="seccion-profesorado">
+                <h2>Profesorado</h2>
+                <ul id="lista-profesorado"></ul>
+            </div>
+            
+            <div class="seccion-carrera" id="seccion-tecnicatura">
+                <h2>Tecnicatura</h2>
+                <ul id="lista-tecnicatura"></ul>
+            </div>
+        </div>
+
+        <div id="detalle-carrera" class="hidden">
+            <button id="btn-volver">&larr; Volver al Menú</button>
+            <h2 id="nombre-carrera"></h2>
+            
+            <div id="progreso-info">
+                <div id="progreso-texto">Cargando...</div>
+                <div class="progress-bar-container">
+                    <div id="progreso-barra"></div>
+                </div>
+            </div>
+            
+            <h3>Materias</h3>
+            <ul id="lista-materias">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DATOS (Tu JSON) ---
+        // Pegamos todos los datos de las carreras directamente aquí
+        const carrerasData = [
+            {
+                "nombre": "Administracion De Empresas",
+                "materias": [
+                    "Taller de Lectura y Escritura",
+                    "Taller Orientado de Ciencias Exactas",
+                    "Teoría de la Organización",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de lectura y Escritura orientado en las Disciplinas",
+                    "Introducción a la Economía",
+                    "Economía clásica",
+                    "Diseño estructural y procesos",
+                    "Matemática para economistas I",
+                    "Economía neoclásica",
+                    "Sistemas de información contable I",
+                    "Historia económica y social mundial y latinoamericana",
+                    "Economía keynesiana",
+                    "Estadística para economistas",
+                    "Planeamiento y control organizacional",
+                    "Matemática para economistas II",
+                    "Laboratorio interdisciplinario",
+                    "Sistemas de información",
+                    "Derecho administrativo",
+                    "Organización industrial",
+                    "Gestión de recursos humanos",
+                    "Dirección estratégica",
+                    "Tópicos de comercialización",
+                    "Planificación y proceso decisorio en las organizaciones",
+                    "Teoría de la innovación y del cambio tecnológico",
+                    "Matemática para economistas III",
+                    "Costos industriales",
+                    "Sistemas de información contable II",
+                    "Gestión en Economía Mixta",
+                    "Empresas públicas",
+                    "Ingeniería financiera",
+                    "Sociología Industrial",
+                    "Régimen tributario",
+                    "Desarrollo y gestión de proyectos emprendedores",
+                    "Taller de Utilitarios",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos II",
+                    "Inglés con Propósitos Específicos III"
+                ]
+            },
+            {
+                "nombre": "Administracion Publica",
+                "materias": [
+                    "Taller Inicial Orientado: Ciencias Sociales",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Introducción a la Economía",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Teoría de la organización",
+                    "Historia argentina contemporánea",
+                    "Política",
+                    "Optativa I",
+                    "Diseño estructural y procesos",
+                    "Introducción a la Macroeconomía",
+                    "Estado, administración y políticas públicas",
+                    "Planeamiento y control organizacional",
+                    "Gestión presupuestaria y finanzas públicas",
+                    "Derecho administrativo",
+                    "Diseño de estructuras y procesos en el sector público",
+                    "Estado y administración pública en la Argentina",
+                    "Fundamentos de la investigación social",
+                    "Teoría y problemas de las organizaciones públicas en la Argentina",
+                    "Teoría de las políticas públicas",
+                    "Gestión de recursos humanos",
+                    "Sistemas de administración financiera en el sector público",
+                    "Implementación de políticas públicas",
+                    "Formulación, gestión y evaluación de proyectos",
+                    "Gestión de recursos humanos en el sector público",
+                    "Procesos de modernización en el sector público",
+                    "Políticas y estructuras de control en el sector público",
+                    "Seminario",
+                    "Taller de práctica pre-profesional",
+                    "Laboratorio interdisciplinario",
+                    "Administración pública provincial y local",
+                    "Optativa II",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III",
+                    "Portugués I",
+                    "Portugués II",
+                    "Taller de Utilitarios"
+                ]
+            },
+            {
+                "nombre": "Automatizacion Y Control",
+                "materias": [
+                    "Tecnicatura Universitaria en Automatización y Control",
+                    "Taller Inicial orientado: Ciencias Exactas",
+                    "Taller Inicial obligatorio del área de Matemáticas",
+                    "Taller Inicial común: Taller de lectura y escritura",
+                    "Matemática general",
+                    "Circuitos eléctricos -",
+                    "Sistemas de representación",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Metodología de la programación",
+                    "Electrónica analógica y digital",
+                    "Matemática aplicada",
+                    "Sistemas de control",
+                    "Microcontroladores",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Automatización industrial",
+                    "Automatización industrial II",
+                    "Desarrollo avanzado de microcontroladores",
+                    "Administración de la producción y mantenimiento",
+                    "Inglés lectocomprensión I",
+                    "Instrumentación y comunicaciones industriales",
+                    "Sistemas de supervisión industrial",
+                    "Laboratorio interdisciplinario",
+                    "Inglés lectocomprensión II",
+                    "Desarrollo de Proyectos I",
+                    "Higiene, seguridad industrial y medio ambiente",
+                    "Control de máquinas eléctricas",
+                    "Desarrollo de proyectos II",
+                    "Robótica industrial"
+                ]
+            },
+            {
+                "nombre": "Comunicaciones",
+                "materias": [
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Orientado: Ciencias Sociales o Taller Inicial Orientado: Ciencias Humanas",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Lenguaje, Comunicación y Cultura",
+                    "Historia Moderna y Contemporánea",
+                    "Sociología Clásica",
+                    "Introducción a la Comunicación",
+                    "Optativa I",
+                    "Sociología Contemporánea",
+                    "Lenguaje, Cultura y Comunicación de la Imagen",
+                    "Sociología de la Cultura",
+                    "Organizaciones y Comunicación",
+                    "Lenguaje, Comunicación y Cultura Escrita",
+                    "Taller de Escritura Periodística I",
+                    "Concepciones de la Comunicación",
+                    "Semiótica de los Medios Masivos",
+                    "Metodología de la Investigación Cuantitativa",
+                    "Optativa II",
+                    "Taller de Diseño y Producción de Medios Gráficos I",
+                    "Laboratorio Interdisciplinario",
+                    "Metodología de la Investigación Cualitativa. Cultura y Comunicación",
+                    "Optativa III",
+                    "Taller de Radio I",
+                    "Planificación y Evaluación de Proyectos Comunicativos",
+                    "Historia de las Técnicas y Medios de Comunicación",
+                    "Optativa IV",
+                    "Taller de Producción Audiovisual I",
+                    "Comunicación Institucional",
+                    "Comunicación Mediática",
+                    "Optativa V",
+                    "Taller de Medios Interactivos",
+                    "Comunicación Masiva y Matrices Culturales",
+                    "Optativa VI",
+                    "Taller de Práctica Profesional",
+                    "Derecho y Economía de los Medios",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Portugués I",
+                    "Portugués II"
+                ]
+            },
+            {
+                "nombre": "Cultura Y Lenguajes Artisticos",
+                "materias": [
+                    "Taller Inicial Común: taller de lectura y escritura",
+                    "Taller Inicial Orientado: ciencias sociales o ciencias humanas",
+                    "Historia moderna y contemporánea",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Teoría de la organización",
+                    "Sociología clásica",
+                    "Lenguaje, comunicación y cultura",
+                    "Historia argentina contemporánea",
+                    "Sociología contemporánea",
+                    "Lenguaje, cultura y comunicación de la imagen",
+                    "Historia latinoamericana contemporánea",
+                    "Lenguaje, comunicación y cultura escrita",
+                    "Sociología de la cultura",
+                    "Teorías de la cultura I",
+                    "Literatura I",
+                    "Teorías de la cultura II",
+                    "Laboratorio interdisciplinario",
+                    "Semiótica de los medios masivos",
+                    "Problemas de arte argentino y latinoamericano I",
+                    "Artes visuales I",
+                    "Artes audiovisuales I",
+                    "Estética",
+                    "Problemas de arte argentino y latinoamericano II",
+                    "Artes audiovisuales II",
+                    "Artes escénicas I",
+                    "Metodología de la investigación cuantitativa",
+                    "Literatura II",
+                    "Gestión de proyectos estético-culturales I",
+                    "Metodología de la investigación cualitativa. Cultura y comunicación",
+                    "Problemas culturales latinoamericanos",
+                    "Políticas culturales y gestión",
+                    "Culturas populares, creencias e interculturalidad",
+                    "Artes visuales II",
+                    "Museos y curaduría",
+                    "Artes escénicas II",
+                    "Gestión de proyectos estético-culturales II",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III",
+                    "Práctica pre profesional/ de investigación[1]"
+                ]
+            },
+            {
+                "nombre": "Ecologia",
+                "materias": [
+                    "Taller Inicial Orientado: Ciencias Exactas o Ciencias Experimentales",
+                    "Taller Inicial Común: Taller de Lectura y escritura",
+                    "CUESTIONES AMBIENTALES CONTEMPORÁNEAS",
+                    "LAS BASES DE LA VIDA Y SU EVOLUCIÓN",
+                    "Matemática general",
+                    "CARTOGRAFÍA, SENSORES REMOTOS Y SISTEMAS DE",
+                    "INFORMACIÓN GEOGRÁFICA",
+                    "QUÍMICA GENERAL",
+                    "LOS ORGANISMOS EN FUNCIONAMIENTO",
+                    "FÍSICA GENERAL",
+                    "MATEMÁTICA APLICADA",
+                    "PROBLEMAS SOCIOECONÓMICOS CONTEMPORÁNEOS",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Ecología Regional",
+                    "QUÍMICA INORGÁNICA",
+                    "GEOGRAFÍA FÍSICA",
+                    "Política, actores y legislación de la gestión ambiental",
+                    "Ecología de poblaciones y comunidades",
+                    "GEOGRAFÍA URBANA Y REGIONAL",
+                    "Elementos de Química orgánica, analítica y biológica",
+                    "Metodología de la investigación cualitativa",
+                    "ECONOMÍA URBANA Y REGIONAL",
+                    "Ecología política",
+                    "Sociedad, cultura y ambiente",
+                    "Química ambiental",
+                    "Formulación, gestión y evaluación de proyectos",
+                    "LABORATORIO INTERDISCIPLINARIO",
+                    "Gestión de recursos hídricos",
+                    "Estadística aplicada",
+                    "Economía ecológica",
+                    "Taller de evaluación de impacto ambiental",
+                    "Gestión de los recursos energéticos",
+                    "Ecología urbana",
+                    "Teledetección y procesamiento de imágenes satelitales",
+                    "Taller de memoria de licenciatura",
+                    "Taller Proyecto Urbano Ambiental",
+                    "Ecología Industrial",
+                    "Gestión de Residuos",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión I"
+                ]
+            },
+            {
+                "nombre": "Economia Industrial",
+                "materias": [
+                    "Taller Inicial Común: Taller de Lectura y Escritura.",
+                    "Taller Inicial Orientado: Ciencias Exactas.",
+                    "Introducción a la Economía",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de lectura y Escritura orientada en las Disciplinas",
+                    "Teoría de la organización",
+                    "Diseño estructural y procesos.",
+                    "Economía clásica.",
+                    "Matemática para economistas I",
+                    "Planeamiento y control organizacional",
+                    "Economía neoclásica",
+                    "Historia económica y social mundial y latinoamericana",
+                    "Sociología",
+                    "Economía keynesiana",
+                    "Estadística para economistas",
+                    "Macroeconomía argentina y latinoamericana",
+                    "Matemática para economistas II",
+                    "Industrias y procesos",
+                    "Organización de la producción y gestión de la calidad",
+                    "Matemática para economistas III",
+                    "Microeconomía",
+                    "Inglés con propósitos específicos IV Economía",
+                    "Laboratorio interdisciplinario",
+                    "Econometría",
+                    "Inglés con propósitos específicos V. Economía",
+                    "Teoría del crecimiento y desarrollo económico",
+                    "Costos industriales",
+                    "Estructura de la economía argentina",
+                    "Economía internacional",
+                    "Historia económica y social argentina",
+                    "Teoría de la empresa y de los mercados",
+                    "Teoría de la innovación y del cambio tecnológico",
+                    "Estrategia y política industrial",
+                    "Finanzas y proyectos de inversión",
+                    "Optativa I",
+                    "Optativa II",
+                    "Taller de Utilitarios",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos I"
+                ]
+            },
+            {
+                "nombre": "Economia Politica",
+                "materias": [
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Introducción a la economía",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Problemas de Filosofía",
+                    "Sociología clásica",
+                    "Economía clásica",
+                    "Matemática para economistas I",
+                    "Sociología contemporánea",
+                    "Economía neoclásica",
+                    "Historia económica y social mundial y latinoamericana",
+                    "Sociología política",
+                    "Economía keynesiana",
+                    "Estadística para economistas",
+                    "Cuentas nacionales Macroeconomía argentina y latinoamericana",
+                    "Matemática para economistas II",
+                    "Metodología de la investigación en Economía",
+                    "Tópicos avanzados de economía clásica y marxista",
+                    "Microeconomía",
+                    "Matemática para economistas III",
+                    "Finanzas públicas",
+                    "Econometría",
+                    "Teorías contemporáneas de la economía política I",
+                    "Laboratorio interdisciplinario",
+                    "Tópicos de macroeconomía avanzada",
+                    "Economía internacional",
+                    "Sistemas económicos comparados",
+                    "Historia económica y social argentina",
+                    "Teorías contemporáneas de la economía política II",
+                    "Organización de la producción e innovación",
+                    "Teoría y política monetaria",
+                    "Teorías del crecimiento económico",
+                    "Desarrollo y subdesarrollo",
+                    "Taller de Utilitarios",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos I"
+                ]
+            },
+            {
+                "nombre": "Educacion",
+                "materias": [
+                    "Taller Inicial Orientado: Ciencias Sociales o Taller Inicial Orientado: Ciencias Humanas",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Pedagogía",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Problemas de Filosofía",
+                    "Historia Moderna y Contemporánea",
+                    "Psicología General",
+                    "Historia General de la Educación",
+                    "Filosofía y Educación",
+                    "Historia Argentina Contemporánea",
+                    "Sociología Clásica",
+                    "Teorías Pedagógicas",
+                    "Historia de la Educación Argentina",
+                    "Laboratorio Interdisciplinario",
+                    "Sociología Contemporánea",
+                    "Política Educacional",
+                    "Filosofía Política",
+                    "Teorías del Aprendizaje",
+                    "Sociología de la Educación",
+                    "Gobierno y Administración de la Educación",
+                    "Optativa",
+                    "Economía de la Educación",
+                    "Metodología de la Investigación Cualitativa",
+                    "Organización Escolar",
+                    "Didáctica",
+                    "Seminario de Educación de Jóvenes y Adultos",
+                    "Seminario de Educación Comparada",
+                    "Teoría y Diseño del Curriculum",
+                    "Seminario Abierto sobre Procesos Educativos Contemporáneos",
+                    "Psicología Educacional",
+                    "Taller de Producción Académica en Educación",
+                    "Taller de Desarrollo Profesional A",
+                    "Seminario sobre Oficio Docente",
+                    "Tecnología Educativa",
+                    "Metodología de la Investigación Cuantitativa Aplicada a la Educación",
+                    "Taller de Desarrollo Profesional B",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión I"
+                ]
+            },
+            {
+                "nombre": "Electromecanica",
+                "materias": [
+                    "INGENIERIA ELECTROMECANICA",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller Inicial Obligatorio del Área de Matemática",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller de Introducción a la ingeniería",
+                    "Taller de Tecnología",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Elementos de cálculo",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Medios de Representación",
+                    "Fundamentos de programación",
+                    "Química general",
+                    "Elementos de álgebra lineal",
+                    "Física Inicial",
+                    "Diseño Asistido",
+                    "Cálculo en varias variables",
+                    "Física I",
+                    "Estadística Aplicada",
+                    "Higiene, Seguridad y Protección Ambiental",
+                    "Ecuaciones Diferenciales",
+                    "Estática y Resistencia de Materiales",
+                    "Física II",
+                    "Mecánica de los Fluidos",
+                    "Termodinámica",
+                    "Técnica Mecánica Racional",
+                    "Métodos Numéricos",
+                    "Organización Industrial",
+                    "Ética, Derecho y Legislación Profesional",
+                    "Electrónica I",
+                    "Mecanismos y Elementos de Máquina",
+                    "Electrotecnia Aplicada",
+                    "Ciencia de los Materiales",
+                    "Sistemas de Control Automático",
+                    "Automatización Básica",
+                    "Mediciones Eléctricas y Electrónicas",
+                    "Elementos de Economía",
+                    "Tecnología Mecánica",
+                    "Instalaciones Electromecánicas I",
+                    "Máquinas Eléctricas",
+                    "Máquinas Hidráulicas",
+                    "Máquinas Térmicas",
+                    "Laboratorio Interdisciplinario de Capacidades Emprendedoras",
+                    "Automatización Avanzada",
+                    "Instalaciones Electromecánicas II",
+                    "Proyecto Final de Ingeniería Electromecánica (anual)",
+                    "Sistemas de Generación, Transmisión y Distribución de la Energía Eléctrica",
+                    "Electrónica Industrial",
+                    "Proyecto Final de Ingeniería Electromecánica (anual)",
+                    "Inglés académico profesional I",
+                    "Inglés académico profesional II",
+                    "Inglés académico profesional III",
+                    "Seminario de inserción laboral",
+                    "Experiencias formativas complementarias de vinculación con el territorio"
+                ]
+            },
+            {
+                "nombre": "Estudios Politicos",
+                "materias": [
+                    "Taller Optativo Orientado: Ciencias Humanas o Ciencias Sociales",
+                    "Taller Inicial Común: Taller de lectura y escritura",
+                    "Política",
+                    "Taller de Lectura y escritura en las Disciplinas",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Filosofía de la ciencia",
+                    "Estado, administración y políticas públicas",
+                    "Sociología clásica",
+                    "Historia moderna y contemporánea",
+                    "Sociología contemporánea",
+                    "Historia latinoamericana contemporánea",
+                    "Introducción a la Economía",
+                    "Sociología política",
+                    "Teoría política clásica",
+                    "Historia argentina contemporánea",
+                    "Derecho I: derecho político y constitucional",
+                    "Laboratorio interdisciplinario",
+                    "Estadística aplicada a las Ciencias Sociales",
+                    "Planificación de políticas públicas",
+                    "Teoría política moderna",
+                    "Metodología de la investigación cualitativa",
+                    "Economía política e internacional",
+                    "Estructuras y actores políticos",
+                    "Teoría política contemporánea",
+                    "Instituciones políticas y política comparada",
+                    "Derecho II: problemáticas constitucionales y derechos humanos",
+                    "Materia optativa orientada",
+                    "Análisis político",
+                    "Medios masivos y sistemas políticos",
+                    "Problemas políticos internacionales",
+                    "Discurso político y opinión pública",
+                    "Taller optativo",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III",
+                    "Portugués I",
+                    "Portugués II",
+                    "Taller de Utilitarios"
+                ]
+            },
+            {
+                "nombre": "Filosofia",
+                "materias": [
+                    "Profesorado Universitario de Educación Superior en Filosofía",
+                    "Taller inicial común: Taller de Lectura y escritura",
+                    "Taller inicial orientado: Ciencias Humanas",
+                    "Problemas de Filosofía",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Lógica y argumentación",
+                    "Problemática educativa",
+                    "Filosofía Antigua y Medieval",
+                    "Ética",
+                    "Adolescencia y educación secundaria",
+                    "Filosofía Moderna",
+                    "Filosofía de la ciencia",
+                    "Aprendizaje escolar",
+                    "Optativa I",
+                    "Filosofía Política",
+                    "Metafísica",
+                    "Residencia I",
+                    "Filosofía del Derecho y ciudadanía",
+                    "Seminario de lectura y producción filosófica",
+                    "Antropología Filosófica",
+                    "Filosofía especial I",
+                    "Filosofía Contemporánea",
+                    "Seminario sobre Problema Filosófico",
+                    "Enseñar en la escuela secundaria y en el nivel superior",
+                    "Seminario sobre filósofo o corriente filosófica",
+                    "Filosofía Especial II",
+                    "Optativa 2",
+                    "Enseñanza de la Filosofía",
+                    "Gnoseología",
+                    "Estética",
+                    "Residencia II",
+                    "Residencia II",
+                    "Desafíos de la profesión docentes en la escuela secundaria y en el nivel superior",
+                    "Laboratorio interdisciplinario",
+                    "Primer nivel del idioma A",
+                    "Segundo Nivel del idioma A",
+                    "Tercer Nivel del idioma A ó Primer nivel del idioma B",
+                    "Taller de Utilitarios"
+                ]
+            },
+            {
+                "nombre": "Fisica",
+                "materias": [
+                    "Profesorado Universitario de Educación Superior en Física",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller Inicial Obligatorio del área de Matemática",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Introducción a la matemática",
+                    "Taller de Lectura y escritura en las disciplinas",
+                    "Cálculo I",
+                    "Álgebra lineal",
+                    "Introducción a la física",
+                    "Cálculo en varias variables",
+                    "Mecánica elemental",
+                    "Problemática educativa",
+                    "Termodinámica y fluidos",
+                    "Óptica y ondas",
+                    "Residencia I. La escuela: ámbito del trabajo docente",
+                    "Ecuaciones diferenciales",
+                    "Química general",
+                    "Electricidad y magnetismo",
+                    "Adolescencia y educación secundaria",
+                    "Aprendizaje escolar",
+                    "Mecánica lagrangiana",
+                    "Laboratorio para la escuela secundaria",
+                    "Enseñar en la escuela secundaria y en el nivel superior",
+                    "Enseñanza de la Física",
+                    "Laboratorio interdisciplinario",
+                    "Introducción a la cuántica y a la relatividad",
+                    "Residencia II en Física",
+                    "Historia y filosofía de las ciencias naturales",
+                    "Laboratorio avanzado",
+                    "Optativa",
+                    "Residencia II en Física",
+                    "Desafíos de la profesión docente en la escuela secundaria y en el nivel superior",
+                    "Electromagnetismo",
+                    "Temas de Física",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocompensión I",
+                    "Inglés Lectocompensión II",
+                    "Inglés Lectocompensión III"
+                ]
+            },
+            {
+                "nombre": "Geografia",
+                "materias": [
+                    "Profesorado Universitario de Educación Superior en Geografía",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Orientado: Ciencias Sociales o Ciencias Humanas",
+                    "Introducción a la Geografía",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Geografía física",
+                    "Sociología clásica",
+                    "Problemática Educativa",
+                    "Epistemología de la Geografía",
+                    "Geografía económica",
+                    "Geografía social y demografía",
+                    "Adolescencia y educación secundaria",
+                    "Geomorfología",
+                    "Historia económica y social mundial y latinoamericana",
+                    "Cartografía, sensores remotos y sistemas de información geográfica",
+                    "Historia argentina contemporánea",
+                    "Enseñar en la escuela secundaria y en el nivel superior",
+                    "Métodos y técnicas de análisis territorial",
+                    "Geografía política",
+                    "Residencia I. La escuela: ámbito del trabajo docente",
+                    "Geografía urbana y regional",
+                    "Aprendizaje escolar",
+                    "Climatología",
+                    "Cartografía temática",
+                    "Economía urbana y regional",
+                    "Geografía regional argentina: social y económica",
+                    "Enseñanza de la Geografía",
+                    "Geografía rural",
+                    "Geografía social y económica de America Latina",
+                    "Laboratorio interdisciplinario",
+                    "Residencia II en Geografía",
+                    "Desafíos de la profesión docente en la escuela secundaria y en el nivel superior",
+                    "Planificación y gestión territorial",
+                    "Residencia II en Geografía",
+                    "Geografía social y económica de los espacios mundiales",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Portugués I"
+                ]
+            },
+            {
+                "nombre": "Historia",
+                "materias": [
+                    "Profesorado Universitario de Educación Superior en Historia",
+                    "Taller Inicial Orientado: Ciencias Sociales o Ciencias Humanas",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Elementos de Prehistoria e Historia de Oriente, Historia Antigua y Altomedieval",
+                    "Historia argentina I",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Historia Medieval y Moderna",
+                    "Problemática Educativa",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Historia Argentina II",
+                    "Historia Contemporánea de Europa",
+                    "Problemas del Conocimiento Histórico",
+                    "Optativa I para Historia",
+                    "Optativa III para HistoriaI",
+                    "Historia Latinoamericana I",
+                    "Historia de Asia",
+                    "Optativa II para Historia",
+                    "Adolescencia y Educación Secundaria",
+                    "Aprendizaje Escolar",
+                    "Historia de la Historiografía",
+                    "Problemas de Historia Argentina Contemporánea",
+                    "Historia Latinoamericana II",
+                    "Residencia I. La escuela: ámbito de trabajo docente",
+                    "Problemas Políticos Internacionales",
+                    "Enseñanza de la Historia",
+                    "Enseñar en la Escuela Secundaria y en el Nivel Superior",
+                    "Seminario de Investigación en Historia",
+                    "Optativa IV para Historia",
+                    "Residencia II en Historia",
+                    "Sistemas Económicos Comparados",
+                    "Desafíos de la Profesión Docente en la Escuela Secundaria y en el Nivel Superior",
+                    "Residencia II en Historia",
+                    "Laboratorio Interdisciplinario",
+                    "Historia de África",
+                    "Optativa V para Historia",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III",
+                    "Taller de Utilitarios"
+                ]
+            },
+            {
+                "nombre": "Industrial",
+                "materias": [
+                    "INGENIERIA INDUSTRIAL",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller Inicial Obligatorio del Área de Matemática",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller de Introducción a la ingeniería",
+                    "Taller de tecnología",
+                    "Medios de Representación",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Elementos de Cálculo",
+                    "Fundamentos de programación",
+                    "Principios de Economía",
+                    "Química general",
+                    "Diseño asistido",
+                    "Física inicial",
+                    "Elementos de álgebra lineal",
+                    "Física I",
+                    "Organización de la producción",
+                    "Laboratorio interdisciplinario de capacidades",
+                    "Estadística aplicada",
+                    "Planificación y control de la producción",
+                    "Cálculo en varias variables",
+                    "Desarrollo de productos",
+                    "Ecuaciones diferenciales",
+                    "Física II",
+                    "Estática y resistencia de materiales",
+                    "Gestión de la calidad y la mejora continua",
+                    "Mecánica de los fluidos",
+                    "Ciencia y Tecnología de los Materiales",
+                    "Termodinámica y máquinas térmicas",
+                    "Costos para la toma de decisiones",
+                    "Procesos industriales",
+                    "Formulación y evaluación de proyectos de inversión",
+                    "Gestión estratégica y comercial",
+                    "Investigación operativa",
+                    "Electrotecnia y máquinas eléctricas",
+                    "Mecánica y mecanismos",
+                    "Simulación Industrial",
+                    "Proyecto industrial",
+                    "Práctica profesional supervisada",
+                    "Instalación de plantas industriales",
+                    "Higiene, seguridad y protección ambiental",
+                    "Logística industrial",
+                    "Automatización industrial",
+                    "Mantenimiento industrial",
+                    "Dirección de empresas",
+                    "Ética, derecho y legislación profesional",
+                    "Electiva",
+                    "Electiva",
+                    "Electiva",
+                    "Inglés Académico Profesional",
+                    "Inglés Académico Profesional II",
+                    "Inglés Académico Profesional III",
+                    "Experiencias formativas complementarias de vinculación con el territorio"
+                ]
+            },
+            {
+                "nombre": "Informatica",
+                "materias": [
+                    "Tecnicatura Universitaria en Informática",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial obligatorio del área Matemática",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Introducción a la programación",
+                    "Introducción a la matemática",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Inglés lectocomprensión I",
+                    "Programación I",
+                    "Lógica y teoría de números",
+                    "Organización del computador I",
+                    "Programación II",
+                    "Sistemas operativos y redes",
+                    "Inglés lectocomprensión II",
+                    "Programación III",
+                    "Inglés lectocomprensión III",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Gestión y administración de bases de datos",
+                    "Ingeniería de software",
+                    "Especificación de software",
+                    "Laboratorio de construcción de software",
+                    "Matemática discreta"
+                ]
+            },
+            {
+                "nombre": "Literatura",
+                "materias": [
+                    "PROFESORADO DE LENGUA Y LITERATURA",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Orientado: Ciencias Sociales o Taller Inicial Orientado: Ciencias Humanas",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Lenguaje, Comunicación y Cultura",
+                    "Introducción a los estudios de la literatura",
+                    "Problemática educativa",
+                    "Estudios de la literatura medieval",
+                    "Optativa I Lengua y Literatura",
+                    "Estudios de la literatura moderna",
+                    "Adolescencia y educación secundaria",
+                    "Aprendizaje escolar",
+                    "Estudios linguisticos",
+                    "Lenguaje, Comunicación y Cultura Escrita",
+                    "Estudios de la literatura contemporanea",
+                    "Literatura latinoamericana",
+                    "Residencia I",
+                    "Estudios gramaticales",
+                    "Optativa II Lengua y Literatura",
+                    "Literatura argentina: teatro y poesia",
+                    "Laboratorio Interdisciplinario",
+                    "Literatura argentina",
+                    "Sintaxis y variación",
+                    "Enseñar en la escuela secundaria",
+                    "Adquisición e historia de la lengua",
+                    "Literatura española",
+                    "Enseñanza de la lengua y literatura",
+                    "Residencia II",
+                    "Desafios de la profesión",
+                    "Narrativa de los siglos",
+                    "Problemas culturales latinoamericanos",
+                    "Residencia III",
+                    "Semantica",
+                    "Seminario de investigación",
+                    "Taller de Utilitarios",
+                    "Inglés lectocomprensión I",
+                    "Ingles lectocomprensión II",
+                    "Portugues I",
+                    "Portugues II"
+                ]
+            },
+            {
+                "nombre": "Matematica",
+                "materias": [
+                    "PROFESORADO DE MATEMATICA",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller Inicial Obligatorio del Área de Matemática",
+                    "Introducción a la Programación",
+                    "Introducción a la Matemática",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Programación I",
+                    "Lógica y Teoría de Números",
+                    "Organización del Computador I",
+                    "Programación II",
+                    "Álgebra Lineal",
+                    "Sistemas Operativos y Redes I",
+                    "Programación III",
+                    "Cálculo para Computación",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Bases de Datos I",
+                    "Matemática Discreta",
+                    "Especificaciones y Verificación de Software",
+                    "Teoría de la Computación",
+                    "Ingeniería de Software I",
+                    "Probabilidad y Estadística",
+                    "Proyecto Profesional I",
+                    "Ingeniería de Software II",
+                    "Organización del Computador II",
+                    "Proyecto Profesional II",
+                    "Bases de Datos II",
+                    "Sistemas Operativos y Redes II",
+                    "Práctica Profesional Supervisada",
+                    "Modelado y Optimización",
+                    "Informática y Sociedad",
+                    "Taller de Tesina de Licenciatura",
+                    "Gestión de Proyectos",
+                    "Laboratorio Interdisciplinario",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III"
+                ]
+            },
+            {
+                "nombre": "Politica Social",
+                "materias": [
+                    "Taller de Lectura y Escritura",
+                    "TIO: Sociales o Humanas",
+                    "Sociología clásica",
+                    "Problemas socioeconómicos contemporáneos",
+                    "TLED",
+                    "Política",
+                    "Sociología contemporánea",
+                    "Política social I: política y cuestión social",
+                    "Historia económica y social mundial y latinoamericana",
+                    "Estado, administración y políticas públicas",
+                    "Introducción a la Economía",
+                    "Sociología política",
+                    "Política social II: teorías de la política social",
+                    "Fundamentos de la investigación social",
+                    "Historia argentina contemporánea",
+                    "Política social comparada",
+                    "Análisis social de la Argentina contemporánea",
+                    "Estructura jurídica del Estado",
+                    "Planificación de políticas públicas",
+                    "Metodología de la investigación cualitativa",
+                    "Política social III: política social argentina y latinoamericana",
+                    "Implementación de políticas públicas",
+                    "Política social IV: actores y procesos culturales de las políticas sociales",
+                    "Electiva sectorial I",
+                    "Introducción a la macroeconomía",
+                    "Diagnóstico y formulación de programas y proyectos sociales",
+                    "Estadística aplicada a las Ciencias Sociales",
+                    "Taller de práctica pre-profesional",
+                    "Evaluación de políticas públicas y programas sociales",
+                    "Política social V: análisis de las políticas sociales",
+                    "Electiva sectorial II",
+                    "Taller de práctica pre-profesional",
+                    "Gestión presupuestaria y finanzas públicas",
+                    "Electiva sectorial III",
+                    "Laboratorio interdisciplinario",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocompensión I",
+                    "Inglés Lectocompensión II",
+                    "Inglés Lectocompensión III"
+                ]
+            },
+            {
+                "nombre": "Prof Economia",
+                "materias": [
+                    "Profesorado Universitario de Educación Superior en Economía",
+                    "Taller Inicial Orientado: Ciencias Exactas o Ciencias Sociales",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Introducción a la Economía",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Teoría de la Organización",
+                    "Economía Clásica",
+                    "Problemática Educativa",
+                    "Matemática para Economistas I",
+                    "Economía Neoclásica",
+                    "Historia Económica y Social Mundial y Latinoamericana",
+                    "Adolescencia y Educación Secundaria",
+                    "Economía Keynesiana",
+                    "Estadística para Economistas",
+                    "Aprendizaje Escolar",
+                    "Enseñar en la Escuela Secundaria y en el Nivel Superior",
+                    "Sistemas de Información Contable",
+                    "Macroeconomía Argentina y Latinoamericana",
+                    "Residencia I. La Escuela: Ámbito del Trabajo Docente",
+                    "Economía Internacional",
+                    "Derechos Económicos, Sociales, Culturales y Ambientales",
+                    "Sistemas Económicos Comparados",
+                    "Diseño Estructural y Procesos",
+                    "Política Económica",
+                    "Enseñanza de la Economía",
+                    "Desarrollo y Subdesarrollo",
+                    "Residencia II en Economía",
+                    "Desafíos de la Profesión Docente en la Escuela Secundaria y en el Nivel Superior",
+                    "Laboratorio Interdisciplinario",
+                    "Historia Económica y Social Argentina",
+                    "Residencia II en Economía",
+                    "Optativa",
+                    "Sociología",
+                    "Inglés con Propósitos Específicos I",
+                    "Inglés con Propósitos Específicos II",
+                    "Inglés con Propósitos Específicos III",
+                    "Taller de utilitarios"
+                ]
+            },
+            {
+                "nombre": "Quimica",
+                "materias": [
+                    "INGENIERIA QUIMICA",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller Inicial Obligatorio del Área de Matemática",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller de Introducción a la ingeniería",
+                    "Taller de tecnología",
+                    "Fundamentos de Programación",
+                    "Problemas socioeconómicos contemporáneos",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Elementos de cálculo",
+                    "Química General",
+                    "Medios de representación",
+                    "Elementos de álgebra lineal",
+                    "Química Inorgánica",
+                    "Física inicial",
+                    "Cálculo en varias variables",
+                    "Física I",
+                    "Química Orgánica",
+                    "Introducción a la tecnología de procesos",
+                    "Diseño Asistido",
+                    "Ecuaciones diferenciales",
+                    "Física II",
+                    "Ciencia de los Materiales",
+                    "Estadística Aplicada",
+                    "Química de la vida",
+                    "Ética, Derecho y Legislación profesional",
+                    "Termodinámica Química",
+                    "Métodos Numéricos",
+                    "Fenómenos de Transporte",
+                    "Química Analítica I",
+                    "Principios de Biotecnología",
+                    "Operaciones Unitarias I",
+                    "Operaciones Unitarias II",
+                    "Laboratorio Interdisciplinario de Capacidades Emprendedoras",
+                    "Fisicoquimica",
+                    "Operaciones Unitarias III",
+                    "Instrumentación y Control de Procesos",
+                    "Higiene, Seguridad y Protección ambiental",
+                    "Organización Industrial",
+                    "Práctica Profesional Supervisada",
+                    "Tecnología y Gestión Ambiental",
+                    "Simulación y Optimización",
+                    "Proyecto Final (anual)",
+                    "Ingeniería de las Reacciones Químicas",
+                    "Instalaciones Industriales",
+                    "Proyecto Final (anual)",
+                    "Electiva",
+                    "Elementos de Economía",
+                    "Inglés académico profesional I",
+                    "Inglés académico profesional II",
+                    "Inglés académico profesional III",
+                    "Seminario de inserción laboral",
+                    "Experiencias formativas complementarias de vinculación con el territorio"
+                ]
+            },
+            {
+                "nombre": "Sist. De Info. Geografica",
+                "materias": [
+                    "Tecnicatura Universitaria en Sistemas de Información Geográfica",
+                    "Taller Inicial Común: Lectoescritura",
+                    "Taller Orientado: Exactas",
+                    "Taller de Aplicación Inicial",
+                    "Problemas Socioeconómicos",
+                    "Contemporáneos",
+                    "Cartografía, Sensores Remotos y SIG",
+                    "Geografía Física",
+                    "Inglés Lectocomprensión I",
+                    "Geografía Urbana y Regional",
+                    "Laboratorio interdisciplinario",
+                    "Programas de SIG",
+                    "Análisis Territorial I",
+                    "Inglés Lectocomprensión II",
+                    "Teledetección y procesamiento de",
+                    "imágenes satelitales",
+                    "Taller de Aplicación I: Escala Nacional",
+                    "Cartografía Temática.",
+                    "Estadística Aplicada a las Ciencias Sociales",
+                    "Taller de aplicación II: Escala Regional",
+                    "Construcción y gestión de base de datos geográficas aplicadas a los SIG",
+                    "Informática aplicada a los SIG: Parte I",
+                    "Análisis Territorial II",
+                    "Taller de Aplicación III: Escala Municipal.",
+                    "Informática Aplicada a los SIG: Parte II",
+                    "Taller Final de aplicación: Proyecto Cartográfico."
+                ]
+            },
+            {
+                "nombre": "Sistemas",
+                "materias": [
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial Obligatorio del Área de Matemática",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Introducción a la programación",
+                    "Introducción a la matemática",
+                    "Taller de Lectura y Escritura en las Disciplinas",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Programación I",
+                    "Lógica y teoría de números",
+                    "Organización del computador I",
+                    "Programación II",
+                    "Sistemas operativos y redes I",
+                    "Álgebra lineal",
+                    "Programación III",
+                    "Cálculo para computación",
+                    "Bases de datos I",
+                    "Ingeniería de software I",
+                    "Especificación y verificación de software",
+                    "Proyecto profesional I",
+                    "Matemática discreta",
+                    "Organización del computador II",
+                    "Proyecto profesional II",
+                    "Bases de datos II",
+                    "Informática y sociedad",
+                    "Práctica profesional supervisada",
+                    "Ingeniería de software II",
+                    "Probabilidad y estadística",
+                    "Taller de tesina de licenciatura",
+                    "Sistemas operativos y redes II",
+                    "Gestión de proyectos",
+                    "Laboratorio interdisciplinario",
+                    "Taller de tesina de licenciatura",
+                    "Modelado y optimización",
+                    "Teoría de la computación",
+                    "Taller de Utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III"
+                ]
+            },
+            {
+                "nombre": "Tec. Quimica",
+                "materias": [
+                    "Tecnicatura Universitaria en Química",
+                    "Taller Inicial Común: Taller de Lectura y Escritura",
+                    "Taller Inicial obligatorio del área Matemática",
+                    "Taller Inicial Orientado: Ciencias Exactas",
+                    "Taller de Lectura y Escritura en las disciplinas",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Química General",
+                    "Optativa I",
+                    "Química Inorgánica",
+                    "Optativa II",
+                    "Inglés lectocomprensión I",
+                    "Química Orgánica",
+                    "Organización de Laboratorios",
+                    "Química Analítica I",
+                    "Laboratorio I",
+                    "Química de la Vida",
+                    "Inglés lectocomprensión II",
+                    "Introducción al equipamiento y procesos  de planta",
+                    "Laboratorio II",
+                    "Química Ambiental",
+                    "Laboratorio III",
+                    "Química Analítica II",
+                    "Taller de Utilitarios"
+                ]
+            },
+            {
+                "nombre": "Urbanismos",
+                "materias": [
+                    "Taller inicial orientado: Ciencias Sociales",
+                    "Taller inicial común: Taller de lectura y escritura",
+                    "Ciudad y Ambiente",
+                    "Taller de lectura y escritura en las disciplinas",
+                    "Problemas Socioeconómicos Contemporáneos",
+                    "Geografía Física",
+                    "Cartografía, Sensores Remotos y Sistemas de Información Geográfica",
+                    "Taller de Lecturas Urbanas",
+                    "Técnicas e Instrumentos de Representación I",
+                    "Sociología Clásica",
+                    "Taller de Lecturas Urbanas",
+                    "Técnicas e Instrumentos de Representación II",
+                    "Sociología Contemporánea",
+                    "Taller de Proyecto Urbano",
+                    "Geografía Urbana y Regional",
+                    "Estado, Administración y Políticas Públicas",
+                    "Taller de Proyecto Urbano",
+                    "Planificación y Gestión Territorial",
+                    "Laboratorio Interdisciplinario",
+                    "Sustentabilidad Ambiental",
+                    "Taller de Planes Urbanos",
+                    "Historia de la Ciudad",
+                    "Estudios Urbanos y Ciencias Sociales",
+                    "Taller de Planes Urbanos",
+                    "Infraestructura y Servicios Urbanos: Energía",
+                    "Gestión del Hábitat",
+                    "Formulación, Gestión y Evaluación de Proyectos",
+                    "Taller de Desarrollo Territorial",
+                    "Geografía Económica",
+                    "Perspectivas y Problemas del Urbanismo Moderno",
+                    "Taller de Desarrollo Territorial",
+                    "Derecho Urbanístico y Ambiental",
+                    "Perspectivas y Problemas del Urbanismo Actual",
+                    "Optativa",
+                    "Movilidad y Transporte",
+                    "Infraestructura y Servicios Urbanos: Saneamiento",
+                    "Desarrollo Inmobiliario",
+                    "Taller de utilitarios",
+                    "Inglés Lectocomprensión I",
+                    "Inglés Lectocomprensión II",
+                    "Inglés Lectocomprensión III"
+                ]
+            }
+        ];
+
+        // --- 2. GRUPOS DE CARRERAS (Según tu definición) ---
+        const grupos = {
+            ingenieria: ["Electromecanica", "Industrial", "Quimica"],
+            licenciatura: [
+                "Administracion De Empresas", "Administracion Publica", "Comunicaciones", 
+                "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial", 
+                "Economia Politica", "Educacion", "Estudios Politicos", "Politica Social", 
+                "Sistemas", "Urbanismos"
+            ],
+            profesorado: [
+                "Filosofia", "Fisica", "Geografia", "Historia", "Literatura", 
+                "Matematica", "Prof Economia"
+            ],
+            tecnicatura: [
+                "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica", 
+                "Tec. Quimica"
+            ]
+        };
+
+        // --- 3. LÓGICA DE LA APLICACIÓN ---
+
+        // Referencias a elementos del DOM
+        const menuCarrerasEl = document.getElementById('menu-carreras');
+        const detalleCarreraEl = document.getElementById('detalle-carrera');
+        const btnVolverEl = document.getElementById('btn-volver');
+        const nombreCarreraEl = document.getElementById('nombre-carrera');
+        const progresoTextoEl = document.getElementById('progreso-texto');
+        const progresoBarraEl = document.getElementById('progreso-barra');
+        const listaMateriasEl = document.getElementById('lista-materias');
+
+        // Variable para guardar la carrera seleccionada
+        let carreraActual = null;
+        // Variable para guardar el estado de las materias (Set es más eficiente)
+        let progresoActual = new Set();
+
+        /**
+         * Función principal que se ejecuta al cargar la página
+         */
+        function inicializar() {
+            // Poblar el menú principal
+            for (const [grupo, carreras] of Object.entries(grupos)) {
+                const listaEl = document.getElementById(`lista-${grupo}`);
+                if (listaEl) {
+                    carreras.forEach(nombreCarrera => {
+                        // Verificar que la carrera exista en los datos JSON
+                        const carreraData = carrerasData.find(c => c.nombre === nombreCarrera);
+                        if (carreraData) {
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = "#";
+                            a.textContent = carreraData.nombre.replace(/_/g, " "); // Reemplaza guiones bajos si los hubiera
+                            a.dataset.carrera = carreraData.nombre; // Guardamos el nombre exacto
+                            a.addEventListener('click', alSeleccionarCarrera);
+                            li.appendChild(a);
+                            listaEl.appendChild(li);
+                        } else {
+                            console.warn(`La carrera "${nombreCarrera}" definida en los grupos no se encontró en carrerasData.`);
+                        }
+                    });
+                }
+            }
+
+            // Configurar el botón de volver
+            btnVolverEl.addEventListener('click', mostrarMenu);
+        }
+
+        /**
+         * Se ejecuta al hacer clic en una carrera del menú
+         */
+        function alSeleccionarCarrera(e) {
+            e.preventDefault();
+            const nombreCarrera = e.target.dataset.carrera;
+            mostrarDetalle(nombreCarrera);
+        }
+
+        /**
+         * Muestra la vista de detalle (checklist) para una carrera
+         */
+        function mostrarDetalle(nombreCarrera) {
+            // Encontrar los datos de la carrera
+            carreraActual = carrerasData.find(c => c.nombre === nombreCarrera);
+            if (!carreraActual) return;
+
+            // Cargar el progreso guardado
+            progresoActual = cargarProgreso(carreraActual.nombre);
+
+            // Configurar la vista de detalle
+            nombreCarreraEl.textContent = carreraActual.nombre.replace(/_/g, " ");
+            listaMateriasEl.innerHTML = ''; // Limpiar lista anterior
+
+            // Crear el checklist de materias
+            carreraActual.materias.forEach((materia, index) => {
+                const li = document.createElement('li');
+                li.className = 'materia-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `materia-${index}`;
+                checkbox.dataset.materia = materia; // Guardamos el nombre de la materia
+                checkbox.checked = progresoActual.has(materia); // Marcar si ya estaba completada
+                
+                const label = document.createElement('label');
+                label.htmlFor = `materia-${index}`;
+                label.textContent = materia;
+
+                // Añadir evento para guardar y actualizar al cambiar
+                checkbox.addEventListener('change', alMarcarMateria);
+                
+                li.appendChild(checkbox);
+                li.appendChild(label);
+                listaMateriasEl.appendChild(li);
+            });
+
+            // Actualizar el porcentaje y la barra
+            actualizarProgresoVisual();
+
+            // Cambiar de vista
+            menuCarrerasEl.classList.add('hidden');
+            detalleCarreraEl.classList.remove('hidden');
+            window.scrollTo(0, 0); // Ir al inicio de la página
+        }
+
+        /**
+         * Muestra la vista del menú principal
+         */
+        function mostrarMenu() {
+            detalleCarreraEl.classList.add('hidden');
+            menuCarrerasEl.classList.remove('hidden');
+            carreraActual = null; // Limpiar la carrera actual
+            progresoActual.clear();
+        }
+
+        /**
+         * Se ejecuta cada vez que se marca/desmarca una materia
+         */
+        function alMarcarMateria(e) {
+            const materia = e.target.dataset.materia;
+            const isChecked = e.target.checked;
+
+            if (isChecked) {
+                progresoActual.add(materia);
+            } else {
+                progresoActual.delete(materia);
+            }
+
+            // Guardar en localStorage
+            guardarProgreso();
+            // Actualizar la UI
+            actualizarProgresoVisual();
+        }
+
+        /**
+         * Actualiza el texto del porcentaje y la barra de progreso
+         */
+        function actualizarProgresoVisual() {
+            if (!carreraActual) return;
+
+            const totalMaterias = carreraActual.materias.length;
+            const completadas = progresoActual.size;
+            
+            // Manejar división por cero si una carrera no tiene materias
+            const porcentaje = totalMaterias > 0 ? (completadas / totalMaterias) * 100 : 0;
+
+            progresoTextoEl.textContent = `Progreso: ${completadas} / ${totalMaterias} materias`;
+            
+            progresoBarraEl.style.width = `${porcentaje}%`;
+            progresoBarraEl.textContent = `${porcentaje.toFixed(1)}%`;
+        }
+
+        // --- 4. PERSISTENCIA (LocalStorage) ---
+
+        /**
+         * Guarda el set de materias completadas en localStorage
+         */
+        function guardarProgreso() {
+            if (!carreraActual) return;
+            // Convertimos el Set a un Array para poder guardarlo como JSON
+            const data = JSON.stringify(Array.from(progresoActual));
+            localStorage.setItem(`progreso_${carreraActual.nombre}`, data);
+        }
+
+        /**
+         * Carga el progreso desde localStorage y lo devuelve como un Set
+         */
+        function cargarProgreso(nombreCarrera) {
+            const data = localStorage.getItem(`progreso_${nombreCarrera}`);
+            if (data) {
+                // Convertimos el Array (de JSON) de nuevo a un Set
+                return new Set(JSON.parse(data));
+            }
+            return new Set(); // Devolver un Set vacío si no hay nada
+        }
+
+
+        // --- 5. INICIAR LA APP ---
+        // Esperar a que todo el HTML esté cargado para ejecutar el script
+        document.addEventListener('DOMContentLoaded', inicializar);
+
+    </script>
+</body>
+</html>
