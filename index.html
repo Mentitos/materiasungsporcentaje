@@ -32,6 +32,7 @@
         
         h1 {
             text-align: center;
+            margin-bottom: 10px; /* Reducido para dar espacio al botón */
         }
 
         /* Ocultar vistas */
@@ -42,6 +43,29 @@
         /* --- Vista del Menú Principal --- */
         #menu-carreras {
             padding: 0 20px 20px 20px;
+        }
+        
+        /* Botón para limpiar caché */
+        .header-controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #btn-limpiar-cache {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #dc3545; /* Rojo peligro */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        #btn-limpiar-cache:hover {
+            background-color: #c82333; /* Rojo más oscuro */
         }
 
         .seccion-carrera {
@@ -177,6 +201,10 @@
 
         <div id="menu-carreras">
             <h1>Progreso de Carreras</h1>
+            
+            <div class="header-controls">
+                <button id="btn-limpiar-cache">Limpiar Progreso Guardado</button>
+            </div>
 
             <div class="seccion-carrera" id="seccion-ingenieria">
                 <h2>Ingeniería</h2>
@@ -217,8 +245,7 @@
     </div>
 
     <script>
-        // --- 1. DATOS (Tu JSON) ---
-        // Pegamos todos los datos de las carreras directamente aquí
+        
         const carrerasData = [
             {
                 "nombre": "Administracion De Empresas",
@@ -249,7 +276,7 @@
                     "Planificación y proceso decisorio en las organizaciones",
                     "Teoría de la innovación y del cambio tecnológico",
                     "Matemática para economistas III",
-                    "Costos industriales",
+                    "Costos industrials",
                     "Sistemas de información contable II",
                     "Gestión en Economía Mixta",
                     "Empresas públicas",
@@ -328,7 +355,7 @@
                     "Desarrollo avanzado de microcontroladores",
                     "Administración de la producción y mantenimiento",
                     "Inglés lectocomprensión I",
-                    "Instrumentación y comunicaciones industriales",
+                    "Instrumentación y comunicaciones industrials",
                     "Sistemas de supervisión industrial",
                     "Laboratorio interdisciplinario",
                     "Inglés lectocomprensión II",
@@ -374,7 +401,7 @@
                     "Comunicación Mediática",
                     "Optativa V",
                     "Taller de Medios Interactivos",
-                    "Comunicación Masiva y Matrices Culturales",
+                    "Comunicación Masiva y Matrices Culturais",
                     "Optativa VI",
                     "Taller de Práctica Profesional",
                     "Derecho y Economía de los Medios",
@@ -416,15 +443,15 @@
                     "Artes escénicas I",
                     "Metodología de la investigación cuantitativa",
                     "Literatura II",
-                    "Gestión de proyectos estético-culturales I",
+                    "Gestión de proyectos estético-culturais I",
                     "Metodología de la investigación cualitativa. Cultura y comunicación",
-                    "Problemas culturales latinoamericanos",
-                    "Políticas culturales y gestión",
+                    "Problemas culturais latinoamericanos",
+                    "Políticas culturais y gestión",
                     "Culturas populares, creencias e interculturalidad",
                     "Artes visuales II",
                     "Museos y curaduría",
                     "Artes escénicas II",
-                    "Gestión de proyectos estético-culturales II",
+                    "Gestión de proyectos estético-culturais II",
                     "Taller de Utilitarios",
                     "Inglés Lectocomprensión I",
                     "Inglés Lectocomprensión II",
@@ -508,7 +535,7 @@
                     "Econometría",
                     "Inglés con propósitos específicos V. Economía",
                     "Teoría del crecimiento y desarrollo económico",
-                    "Costos industriales",
+                    "Costos industrials",
                     "Estructura de la economía argentina",
                     "Economía internacional",
                     "Historia económica y social argentina",
@@ -616,7 +643,6 @@
             {
                 "nombre": "Electromecanica",
                 "materias": [
-                    "INGENIERIA ELECTROMECANICA",
                     "Taller Inicial Orientado: Ciencias Exactas",
                     "Taller Inicial Obligatorio del Área de Matemática",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
@@ -699,11 +725,11 @@
                     "Estructuras y actores políticos",
                     "Teoría política contemporánea",
                     "Instituciones políticas y política comparada",
-                    "Derecho II: problemáticas constitucionales y derechos humanos",
+                    "Derecho II: problemáticas constitucionals y derechos humanos",
                     "Materia optativa orientada",
                     "Análisis político",
                     "Medios masivos y sistemas políticos",
-                    "Problemas políticos internacionales",
+                    "Problemas políticos internacionals",
                     "Discurso político y opinión pública",
                     "Taller optativo",
                     "Inglés Lectocomprensión I",
@@ -717,7 +743,6 @@
             {
                 "nombre": "Filosofia",
                 "materias": [
-                    "Profesorado Universitario de Educación Superior en Filosofía",
                     "Taller inicial común: Taller de Lectura y escritura",
                     "Taller inicial orientado: Ciencias Humanas",
                     "Problemas de Filosofía",
@@ -761,7 +786,6 @@
             {
                 "nombre": "Fisica",
                 "materias": [
-                    "Profesorado Universitario de Educación Superior en Física",
                     "Taller Inicial Orientado: Ciencias Exactas",
                     "Taller Inicial Obligatorio del área de Matemática",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
@@ -789,7 +813,7 @@
                     "Laboratorio interdisciplinario",
                     "Introducción a la cuántica y a la relatividad",
                     "Residencia II en Física",
-                    "Historia y filosofía de las ciencias naturales",
+                    "Historia y filosofía de las ciencias naturais",
                     "Laboratorio avanzado",
                     "Optativa",
                     "Residencia II en Física",
@@ -805,7 +829,6 @@
             {
                 "nombre": "Geografia",
                 "materias": [
-                    "Profesorado Universitario de Educación Superior en Geografía",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Taller Inicial Orientado: Ciencias Sociales o Ciencias Humanas",
                     "Introducción a la Geografía",
@@ -840,7 +863,7 @@
                     "Desafíos de la profesión docente en la escuela secundaria y en el nivel superior",
                     "Planificación y gestión territorial",
                     "Residencia II en Geografía",
-                    "Geografía social y económica de los espacios mundiales",
+                    "Geografía social y económica de los espacios mundials",
                     "Taller de Utilitarios",
                     "Inglés Lectocomprensión I",
                     "Inglés Lectocomprensión II",
@@ -850,7 +873,6 @@
             {
                 "nombre": "Historia",
                 "materias": [
-                    "Profesorado Universitario de Educación Superior en Historia",
                     "Taller Inicial Orientado: Ciencias Sociales o Ciencias Humanas",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Elementos de Prehistoria e Historia de Oriente, Historia Antigua y Altomedieval",
@@ -873,7 +895,7 @@
                     "Problemas de Historia Argentina Contemporánea",
                     "Historia Latinoamericana II",
                     "Residencia I. La escuela: ámbito de trabajo docente",
-                    "Problemas Políticos Internacionales",
+                    "Problemas Políticos Internacionals",
                     "Enseñanza de la Historia",
                     "Enseñar en la Escuela Secundaria y en el Nivel Superior",
                     "Seminario de Investigación en Historia",
@@ -894,7 +916,6 @@
             {
                 "nombre": "Industrial",
                 "materias": [
-                    "INGENIERIA INDUSTRIAL",
                     "Taller Inicial Orientado: Ciencias Exactas",
                     "Taller Inicial Obligatorio del Área de Matemática",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
@@ -925,7 +946,7 @@
                     "Ciencia y Tecnología de los Materiales",
                     "Termodinámica y máquinas térmicas",
                     "Costos para la toma de decisiones",
-                    "Procesos industriales",
+                    "Procesos industrials",
                     "Formulación y evaluación de proyectos de inversión",
                     "Gestión estratégica y comercial",
                     "Investigación operativa",
@@ -934,7 +955,7 @@
                     "Simulación Industrial",
                     "Proyecto industrial",
                     "Práctica profesional supervisada",
-                    "Instalación de plantas industriales",
+                    "Instalación de plantas industrials",
                     "Higiene, seguridad y protección ambiental",
                     "Logística industrial",
                     "Automatización industrial",
@@ -953,7 +974,6 @@
             {
                 "nombre": "Informatica",
                 "materias": [
-                    "Tecnicatura Universitaria en Informática",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Taller Inicial obligatorio del área Matemática",
                     "Taller Inicial Orientado: Ciencias Exactas",
@@ -980,7 +1000,6 @@
             {
                 "nombre": "Literatura",
                 "materias": [
-                    "PROFESORADO DE LENGUA Y LITERATURA",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Taller Inicial Orientado: Ciencias Sociales o Taller Inicial Orientado: Ciencias Humanas",
                     "Taller de Lectura y Escritura en las Disciplinas",
@@ -998,7 +1017,7 @@
                     "Estudios de la literatura contemporanea",
                     "Literatura latinoamericana",
                     "Residencia I",
-                    "Estudios gramaticales",
+                    "Estudios gramaticals",
                     "Optativa II Lengua y Literatura",
                     "Literatura argentina: teatro y poesia",
                     "Laboratorio Interdisciplinario",
@@ -1011,8 +1030,7 @@
                     "Residencia II",
                     "Desafios de la profesión",
                     "Narrativa de los siglos",
-                    "Problemas culturales latinoamericanos",
-                    "Residencia III",
+                    "Problemas culturais latinoamericanos",
                     "Semantica",
                     "Seminario de investigación",
                     "Taller de Utilitarios",
@@ -1025,7 +1043,6 @@
             {
                 "nombre": "Matematica",
                 "materias": [
-                    "PROFESORADO DE MATEMATICA",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Taller Inicial Orientado: Ciencias Exactas",
                     "Taller Inicial Obligatorio del Área de Matemática",
@@ -1090,14 +1107,14 @@
                     "Metodología de la investigación cualitativa",
                     "Política social III: política social argentina y latinoamericana",
                     "Implementación de políticas públicas",
-                    "Política social IV: actores y procesos culturales de las políticas sociales",
+                    "Política social IV: actores y procesos culturais de las políticas sociais",
                     "Electiva sectorial I",
                     "Introducción a la macroeconomía",
-                    "Diagnóstico y formulación de programas y proyectos sociales",
+                    "Diagnóstico y formulación de programas y proyectos sociais",
                     "Estadística aplicada a las Ciencias Sociales",
                     "Taller de práctica pre-profesional",
-                    "Evaluación de políticas públicas y programas sociales",
-                    "Política social V: análisis de las políticas sociales",
+                    "Evaluación de políticas públicas y programas sociais",
+                    "Política social V: análisis de las políticas sociais",
                     "Electiva sectorial II",
                     "Taller de práctica pre-profesional",
                     "Gestión presupuestaria y finanzas públicas",
@@ -1112,7 +1129,6 @@
             {
                 "nombre": "Prof Economia",
                 "materias": [
-                    "Profesorado Universitario de Educación Superior en Economía",
                     "Taller Inicial Orientado: Ciencias Exactas o Ciencias Sociales",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Introducción a la Economía",
@@ -1133,7 +1149,7 @@
                     "Macroeconomía Argentina y Latinoamericana",
                     "Residencia I. La Escuela: Ámbito del Trabajo Docente",
                     "Economía Internacional",
-                    "Derechos Económicos, Sociales, Culturales y Ambientales",
+                    "Derechos Económicos, Sociales, Culturais y Ambientales",
                     "Sistemas Económicos Comparados",
                     "Diseño Estructural y Procesos",
                     "Política Económica",
@@ -1155,7 +1171,6 @@
             {
                 "nombre": "Quimica",
                 "materias": [
-                    "INGENIERIA QUIMICA",
                     "Taller Inicial Orientado: Ciencias Exactas",
                     "Taller Inicial Obligatorio del Área de Matemática",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
@@ -1199,7 +1214,7 @@
                     "Simulación y Optimización",
                     "Proyecto Final (anual)",
                     "Ingeniería de las Reacciones Químicas",
-                    "Instalaciones Industriales",
+                    "Instalaciones Industrials",
                     "Proyecto Final (anual)",
                     "Electiva",
                     "Elementos de Economía",
@@ -1213,7 +1228,6 @@
             {
                 "nombre": "Sist. De Info. Geografica",
                 "materias": [
-                    "Tecnicatura Universitaria en Sistemas de Información Geográfica",
                     "Taller Inicial Común: Lectoescritura",
                     "Taller Orientado: Exactas",
                     "Taller de Aplicación Inicial",
@@ -1287,7 +1301,6 @@
             {
                 "nombre": "Tec. Quimica",
                 "materias": [
-                    "Tecnicatura Universitaria en Química",
                     "Taller Inicial Común: Taller de Lectura y Escritura",
                     "Taller Inicial obligatorio del área Matemática",
                     "Taller Inicial Orientado: Ciencias Exactas",
@@ -1360,7 +1373,6 @@
             }
         ];
 
-        // --- 2. GRUPOS DE CARRERAS (Según tu definición) ---
         const grupos = {
             ingenieria: ["Electromecanica", "Industrial", "Quimica"],
             licenciatura: [
@@ -1379,9 +1391,7 @@
             ]
         };
 
-        // --- 3. LÓGICA DE LA APLICACIÓN ---
-
-        // Referencias a elementos del DOM
+        
         const menuCarrerasEl = document.getElementById('menu-carreras');
         const detalleCarreraEl = document.getElementById('detalle-carrera');
         const btnVolverEl = document.getElementById('btn-volver');
@@ -1389,29 +1399,30 @@
         const progresoTextoEl = document.getElementById('progreso-texto');
         const progresoBarraEl = document.getElementById('progreso-barra');
         const listaMateriasEl = document.getElementById('lista-materias');
+        
+        
+        const btnLimpiarCacheEl = document.getElementById('btn-limpiar-cache');
 
-        // Variable para guardar la carrera seleccionada
+        
         let carreraActual = null;
-        // Variable para guardar el estado de las materias (Set es más eficiente)
+        
         let progresoActual = new Set();
 
-        /**
-         * Función principal que se ejecuta al cargar la página
-         */
+        
         function inicializar() {
-            // Poblar el menú principal
+            
             for (const [grupo, carreras] of Object.entries(grupos)) {
                 const listaEl = document.getElementById(`lista-${grupo}`);
                 if (listaEl) {
                     carreras.forEach(nombreCarrera => {
-                        // Verificar que la carrera exista en los datos JSON
+                        
                         const carreraData = carrerasData.find(c => c.nombre === nombreCarrera);
                         if (carreraData) {
                             const li = document.createElement('li');
                             const a = document.createElement('a');
                             a.href = "#";
-                            a.textContent = carreraData.nombre.replace(/_/g, " "); // Reemplaza guiones bajos si los hubiera
-                            a.dataset.carrera = carreraData.nombre; // Guardamos el nombre exacto
+                            a.textContent = carreraData.nombre.replace(/_/g, " "); 
+                            a.dataset.carrera = carreraData.nombre; 
                             a.addEventListener('click', alSeleccionarCarrera);
                             li.appendChild(a);
                             listaEl.appendChild(li);
@@ -1422,35 +1433,28 @@
                 }
             }
 
-            // Configurar el botón de volver
             btnVolverEl.addEventListener('click', mostrarMenu);
+            
+            btnLimpiarCacheEl.addEventListener('click', limpiarProgreso);
         }
 
-        /**
-         * Se ejecuta al hacer clic en una carrera del menú
-         */
+        
         function alSeleccionarCarrera(e) {
             e.preventDefault();
             const nombreCarrera = e.target.dataset.carrera;
             mostrarDetalle(nombreCarrera);
         }
 
-        /**
-         * Muestra la vista de detalle (checklist) para una carrera
-         */
+        
         function mostrarDetalle(nombreCarrera) {
-            // Encontrar los datos de la carrera
+            
             carreraActual = carrerasData.find(c => c.nombre === nombreCarrera);
             if (!carreraActual) return;
 
-            // Cargar el progreso guardado
             progresoActual = cargarProgreso(carreraActual.nombre);
 
-            // Configurar la vista de detalle
             nombreCarreraEl.textContent = carreraActual.nombre.replace(/_/g, " ");
-            listaMateriasEl.innerHTML = ''; // Limpiar lista anterior
-
-            // Crear el checklist de materias
+            listaMateriasEl.innerHTML = '';
             carreraActual.materias.forEach((materia, index) => {
                 const li = document.createElement('li');
                 li.className = 'materia-item';
@@ -1458,14 +1462,14 @@
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.id = `materia-${index}`;
-                checkbox.dataset.materia = materia; // Guardamos el nombre de la materia
-                checkbox.checked = progresoActual.has(materia); // Marcar si ya estaba completada
+                checkbox.dataset.index = index; 
+                checkbox.checked = progresoActual.has(index.toString());
                 
                 const label = document.createElement('label');
                 label.htmlFor = `materia-${index}`;
                 label.textContent = materia;
 
-                // Añadir evento para guardar y actualizar al cambiar
+                
                 checkbox.addEventListener('change', alMarcarMateria);
                 
                 li.appendChild(checkbox);
@@ -1473,54 +1477,45 @@
                 listaMateriasEl.appendChild(li);
             });
 
-            // Actualizar el porcentaje y la barra
+            
             actualizarProgresoVisual();
 
-            // Cambiar de vista
+            
             menuCarrerasEl.classList.add('hidden');
             detalleCarreraEl.classList.remove('hidden');
-            window.scrollTo(0, 0); // Ir al inicio de la página
+            window.scrollTo(0, 0); 
         }
 
-        /**
-         * Muestra la vista del menú principal
-         */
         function mostrarMenu() {
             detalleCarreraEl.classList.add('hidden');
             menuCarrerasEl.classList.remove('hidden');
-            carreraActual = null; // Limpiar la carrera actual
+            carreraActual = null; 
             progresoActual.clear();
         }
 
-        /**
-         * Se ejecuta cada vez que se marca/desmarca una materia
-         */
+        
         function alMarcarMateria(e) {
-            const materia = e.target.dataset.materia;
+            const materiaIndex = e.target.dataset.index;
             const isChecked = e.target.checked;
 
             if (isChecked) {
-                progresoActual.add(materia);
+                progresoActual.add(materiaIndex);
             } else {
-                progresoActual.delete(materia);
+                progresoActual.delete(materiaIndex);
             }
 
-            // Guardar en localStorage
+            
             guardarProgreso();
-            // Actualizar la UI
+            
             actualizarProgresoVisual();
         }
 
-        /**
-         * Actualiza el texto del porcentaje y la barra de progreso
-         */
         function actualizarProgresoVisual() {
             if (!carreraActual) return;
 
             const totalMaterias = carreraActual.materias.length;
             const completadas = progresoActual.size;
             
-            // Manejar división por cero si una carrera no tiene materias
             const porcentaje = totalMaterias > 0 ? (completadas / totalMaterias) * 100 : 0;
 
             progresoTextoEl.textContent = `Progreso: ${completadas} / ${totalMaterias} materias`;
@@ -1529,33 +1524,42 @@
             progresoBarraEl.textContent = `${porcentaje.toFixed(1)}%`;
         }
 
-        // --- 4. PERSISTENCIA (LocalStorage) ---
-
-        /**
-         * Guarda el set de materias completadas en localStorage
-         */
+     
+        
         function guardarProgreso() {
             if (!carreraActual) return;
-            // Convertimos el Set a un Array para poder guardarlo como JSON
+            
             const data = JSON.stringify(Array.from(progresoActual));
             localStorage.setItem(`progreso_${carreraActual.nombre}`, data);
         }
 
-        /**
-         * Carga el progreso desde localStorage y lo devuelve como un Set
-         */
+        
         function cargarProgreso(nombreCarrera) {
             const data = localStorage.getItem(`progreso_${nombreCarrera}`);
             if (data) {
-                // Convertimos el Array (de JSON) de nuevo a un Set
+                
                 return new Set(JSON.parse(data));
             }
-            return new Set(); // Devolver un Set vacío si no hay nada
+            return new Set(); 
+        }
+        
+        
+        function limpiarProgreso() {
+            
+            const confirmado = confirm(
+                "¿Estás seguro de que deseas borrar TODO el progreso guardado?\n" +
+                "Esta acción no se puede deshacer."
+            );
+            
+            if (confirmado) {
+                
+                localStorage.clear();
+                
+                location.reload();
+            }
         }
 
 
-        // --- 5. INICIAR LA APP ---
-        // Esperar a que todo el HTML esté cargado para ejecutar el script
         document.addEventListener('DOMContentLoaded', inicializar);
 
     </script>
