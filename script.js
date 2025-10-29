@@ -28,6 +28,8 @@ const progresoTextoEl = document.getElementById('progreso-texto');
 const progresoBarraEl = document.getElementById('progreso-barra');
 const listaMateriasEl = document.getElementById('lista-materias');
 const btnLimpiarCacheEl = document.getElementById('btn-limpiar-cache');
+const mensajeMotivacionalEl = document.getElementById('mensaje-motivacional');
+const confettiCanvas = document.getElementById('confetti-canvas');
 
 let carreraActual = null;
 let progresoActual = new Set();
@@ -121,6 +123,7 @@ function mostrarMenu() {
     menuCarrerasEl.classList.remove('hidden');
     carreraActual = null; 
     progresoActual.clear();
+    stopConfetti();
 }
 
 function alMarcarMateria(e) {
@@ -164,6 +167,20 @@ function actualizarProgresoVisual() {
     
     progresoBarraEl.style.width = `${porcentaje}%`;
     progresoBarraEl.textContent = `${porcentaje.toFixed(1)}%`;
+
+    if (porcentaje === 100) {
+        mensajeMotivacionalEl.textContent = "¡Felicidades, siempre supe que podías!";
+        progresoBarraEl.classList.add('rainbow');
+        startConfetti();
+    } else if (porcentaje > 50) {
+        mensajeMotivacionalEl.textContent = "¡Dale que se puede, ya mitad de la línea recta!";
+        progresoBarraEl.classList.remove('rainbow');
+        stopConfetti();
+    } else {
+        mensajeMotivacionalEl.textContent = "";
+        progresoBarraEl.classList.remove('rainbow');
+        stopConfetti();
+    }
 }
 
 function guardarProgreso(nombreCarrera, progresoSet) {
@@ -189,4 +206,70 @@ function limpiarProgreso() {
         localStorage.clear();
         location.reload();
     }
+}
+
+// Confetti JIJI
+let confettiAnimationId;
+
+function startConfetti() {
+    const canvas = confettiCanvas;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const numberOfParticles = 200;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ["#ff0000", "#ff7f00", "#ffff00", "#00ff00", "#0000ff", "#4b0082", "#8b00ff"];
+
+    function Particle() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 5 + 2;
+        this.speed = Math.random() * 3 + 2;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.rotation = Math.random() * 360;
+    }
+
+    Particle.prototype.update = function() {
+        this.y += this.speed;
+        this.rotation += this.speed / 2;
+        if (this.y > canvas.height) {
+            this.y = -this.size;
+            this.x = Math.random() * canvas.width;
+        }
+    };
+
+    Particle.prototype.draw = function() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+    };
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        confettiAnimationId = requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+function stopConfetti() {
+    if (confettiAnimationId) {
+        cancelAnimationFrame(confettiAnimationId);
+    }
+    const canvas = confettiCanvas;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }

@@ -1,4 +1,4 @@
-/* Estilos Generales */
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -25,20 +25,17 @@
         
         h1 {
             text-align: center;
-            margin-bottom: 10px; /* Reducido para dar espacio al botón */
+            margin-bottom: 10px; 
         }
 
-        /* Ocultar vistas */
         .hidden {
             display: none;
         }
 
-        /* --- Vista del Menú Principal --- */
         #menu-carreras {
             padding: 0 20px 20px 20px;
         }
         
-        /* Botón para limpiar caché */
         .header-controls {
             text-align: center;
             margin-bottom: 20px;
@@ -47,7 +44,7 @@
         #btn-limpiar-cache {
             display: inline-block;
             padding: 8px 16px;
-            background-color: #dc3545; /* Rojo peligro */
+            background-color: #dc3545; 
             color: white;
             border: none;
             border-radius: 5px;
@@ -58,7 +55,7 @@
         }
         
         #btn-limpiar-cache:hover {
-            background-color: #c82333; /* Rojo más oscuro */
+            background-color: #c82333; 
         }
 
         .seccion-carrera {
@@ -90,7 +87,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
         }
 
-        /* --- Vista de Detalle de Carrera --- */
         #detalle-carrera {
             padding: 20px;
         }
@@ -112,7 +108,6 @@
             background-color: #5a6268;
         }
 
-        /* Progreso */
         #progreso-info {
             margin-bottom: 20px;
         }
@@ -142,7 +137,18 @@
             font-weight: bold;
         }
 
-        /* Lista de Materias */
+        .rainbow {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            background-size: 200% 200%;
+            animation: rainbow 2s ease infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         #lista-materias {
             list-style: none;
             padding: 0;
@@ -170,7 +176,6 @@
 
         .materia-item input[type="checkbox"] {
             margin-right: 12px;
-            /* Estilos para hacer el checkbox más grande y fácil de clickear */
             width: 18px;
             height: 18px;
             cursor: pointer;
@@ -198,6 +203,9 @@
         
         .footer-creditos p {
             margin: 5px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .footer-creditos a {
@@ -207,4 +215,8 @@
         
         .footer-creditos a:hover {
             text-decoration: underline;
+        }
+
+        .footer-creditos a svg {
+            fill: #0056b3;
         }
