@@ -34,6 +34,15 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 let carreraActual = null;
 let progresoActual = new Set();
 
+// esto para detectar si en el json de carreras.js aparece algo así: < "87:39" >
+function esMateriaCompuesta(materia) { 
+    return typeof materia === 'string' && materia.includes(':');
+}
+// con esto obtenemos las materias < 87 > y < 39 > del ejemplo anterior
+function parseMateria(materia) {
+    return materia.split(':').map(id => parseInt(id, 10));
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const [carrerasResponse, materiasResponse] = await Promise.all([
@@ -90,25 +99,91 @@ function mostrarDetalle(nombreCarrera) {
 
     nombreCarreraEl.textContent = carreraActual.nombre.replace(/_/g, " ");
     listaMateriasEl.innerHTML = '';
-    carreraActual.materias.forEach((materiaId, index) => {
+    carreraActual.materias.forEach((materiaRaw, index) => {
         const li = document.createElement('li');
         li.className = 'materia-item';
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `materia-${index}`;
-        checkbox.dataset.materiaId = materiaId; 
-        checkbox.checked = progresoActual.has(materiaId);
-        
-        const label = document.createElement('label');
-        label.htmlFor = `materia-${index}`;
-        label.textContent = materiasMap.get(materiaId);
+        /* ===== Materia compuesta ===== */
+        if (esMateriaCompuesta(materiaRaw)) {
+            const ids = parseMateria(materiaRaw);
 
-        checkbox.addEventListener('change', alMarcarMateria);
-        
-        li.appendChild(checkbox);
-        li.appendChild(label);
+            const container = document.createElement('div');
+            container.className = 'materia-compuesta';
+
+            const select = document.createElement('select');
+            select.className = 'materia-select';
+
+            ids.forEach(id => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = materiasMap.get(id) ?? `Materia ${id}`;
+                select.appendChild(opt);
+            });
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+
+            const label = document.createElement('label');
+            label.className = 'materia-label';
+
+            const aprobada = [...progresoActual].find(id => ids.includes(id));
+            if (aprobada) {
+                select.value = aprobada;
+                checkbox.checked = true;
+            }
+
+            label.textContent = materiasMap.get(parseInt(select.value, 10));
+
+            // cambia la opción seleccionada en el select lol
+            select.addEventListener('change', () => {
+                label.textContent = materiasMap.get(parseInt(select.value, 10));
+
+                if (!checkbox.checked) return;
+
+                ids.forEach(id => progresoActual.delete(id));
+                progresoActual.add(parseInt(select.value, 10));
+                guardarProgreso(carreraActual.nombre, progresoActual);
+            });
+
+            // checkbox como las demás
+            checkbox.addEventListener('change', () => {
+                ids.forEach(id => progresoActual.delete(id));
+
+                if (checkbox.checked) {
+                    progresoActual.add(parseInt(select.value, 10));
+                }
+
+                guardarProgreso(carreraActual.nombre, progresoActual);
+                actualizarProgresoVisual();
+            });
+
+            container.appendChild(checkbox);
+            container.appendChild(label); // este label es el que pone la materia seleccionada
+            container.appendChild(select);
+            li.appendChild(container);
+        }
+
+
+        /* ===== Materia normal ===== */
+        else {
+            const materiaId = parseInt(materiaRaw, 10);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.dataset.materiaId = materiaId;
+            checkbox.checked = progresoActual.has(materiaId);
+
+            const label = document.createElement('label');
+            label.textContent = materiasMap.get(materiaId);
+
+            checkbox.addEventListener('change', alMarcarMateria);
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+        }
+
         listaMateriasEl.appendChild(li);
+    });staMateriasEl.appendChild(li);
     });
 
     actualizarProgresoVisual();

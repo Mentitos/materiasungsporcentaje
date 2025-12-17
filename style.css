@@ -220,3 +220,32 @@
         .footer-creditos a svg {
             fill: #0056b3;
         }
+
+        .materia-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            width: 1.6em;
+            height: 1.6em;
+            padding: 0;
+            margin-left: .3em;
+
+            border: none;
+            background: transparent;
+
+            cursor: pointer;
+
+            color: transparent;          /* oculta texto */
+        }
+
+        /* Flechita visible */
+        .materia-select {
+            background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>\
+<polyline points='6 9 12 15 18 9'/>\
+</svg>");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 1em;
+        }
