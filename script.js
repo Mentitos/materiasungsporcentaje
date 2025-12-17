@@ -183,14 +183,13 @@ function mostrarDetalle(nombreCarrera) {
         }
 
         listaMateriasEl.appendChild(li);
-    });staMateriasEl.appendChild(li);
     });
 
     actualizarProgresoVisual();
 
     menuCarrerasEl.classList.add('hidden');
     detalleCarreraEl.classList.remove('hidden');
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
 }
 
 function mostrarMenu() {
