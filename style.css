@@ -238,6 +238,10 @@
 
             color: transparent;          /* oculta texto */
         }
+        /* hace que las opciones aparezcan y no sean transparentes cuando aparece el menu */
+        .materia-select option {
+            color: initial;
+        }
 
         /* Flechita visible */
         .materia-select {
