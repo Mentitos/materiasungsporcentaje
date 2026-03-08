@@ -5,17 +5,17 @@ let materiasMap = new Map();
 const grupos = {
     ingenieria: ["Electromecanica", "Industrial", "Quimica"],
     licenciatura: [
-        "Administracion De Empresas", "Administracion Publica", "Comunicaciones", 
-        "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial", 
-        "Economia Politica", "Educacion", "Estudios Politicos", "Politica Social", 
-        "Sistemas", "Urbanismos"
+        "Administracion De Empresas", "Administracion Publica", "Comunicaciones",
+        "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial",
+        "Economia Politica", "Educacion", "Estudios Politicos", "Logistica", "Politica Social",
+        "Sistemas", "Sociologia", "Urbanismos"
     ],
     profesorado: [
-        "Filosofia", "Fisica", "Geografia", "Historia", "Literatura", 
+        "Filosofia", "Fisica", "Geografia", "Historia", "Literatura",
         "Matematica", "Prof Economia"
     ],
     tecnicatura: [
-        "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica", 
+        "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica",
         "Tec. Quimica"
     ]
 };
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]);
         carrerasData = await carrerasResponse.json();
         materiasData = await materiasResponse.json();
-        
+
         materiasData.forEach(materia => {
             materiasMap.set(materia.id, materia.nombre);
         });
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
                         a.href = "#";
-                        a.textContent = carreraData.nombre.replace(/_/g, " "); 
-                        a.dataset.carrera = carreraData.nombre; 
+                        a.textContent = carreraData.nombre.replace(/_/g, " ");
+                        a.dataset.carrera = carreraData.nombre;
                         a.addEventListener('click', alSeleccionarCarrera);
                         li.appendChild(a);
                         listaEl.appendChild(li);
@@ -97,15 +97,15 @@ function mostrarDetalle(nombreCarrera) {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `materia-${index}`;
-        checkbox.dataset.materiaId = materiaId; 
+        checkbox.dataset.materiaId = materiaId;
         checkbox.checked = progresoActual.has(materiaId);
-        
+
         const label = document.createElement('label');
         label.htmlFor = `materia-${index}`;
         label.textContent = materiasMap.get(materiaId);
 
         checkbox.addEventListener('change', alMarcarMateria);
-        
+
         li.appendChild(checkbox);
         li.appendChild(label);
         listaMateriasEl.appendChild(li);
@@ -115,13 +115,13 @@ function mostrarDetalle(nombreCarrera) {
 
     menuCarrerasEl.classList.add('hidden');
     detalleCarreraEl.classList.remove('hidden');
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
 }
 
 function mostrarMenu() {
     detalleCarreraEl.classList.add('hidden');
     menuCarrerasEl.classList.remove('hidden');
-    carreraActual = null; 
+    carreraActual = null;
     progresoActual.clear();
     stopConfetti();
 }
@@ -135,7 +135,7 @@ function alMarcarMateria(e) {
     } else {
         progresoActual.delete(materiaId);
     }
-    
+
     guardarProgreso(carreraActual.nombre, progresoActual);
     sincronizarMateriaEnOtrasCarreras(materiaId, isChecked);
     actualizarProgresoVisual();
@@ -160,11 +160,11 @@ function actualizarProgresoVisual() {
 
     const totalMaterias = carreraActual.materias.length;
     const completadas = progresoActual.size;
-    
+
     const porcentaje = totalMaterias > 0 ? (completadas / totalMaterias) * 100 : 0;
 
     progresoTextoEl.textContent = `Progreso: ${completadas} / ${totalMaterias} materias`;
-    
+
     progresoBarraEl.style.width = `${porcentaje}%`;
     progresoBarraEl.textContent = `${porcentaje.toFixed(1)}%`;
 
@@ -193,7 +193,7 @@ function cargarProgreso(nombreCarrera) {
     if (data) {
         return new Set(JSON.parse(data));
     }
-    return new Set(); 
+    return new Set();
 }
 
 function limpiarProgreso() {
@@ -201,7 +201,7 @@ function limpiarProgreso() {
         "¿Estás seguro de que deseas borrar TODO el progreso guardado?\n" +
         "Esta acción no se puede deshacer."
     );
-    
+
     if (confirmado) {
         localStorage.clear();
         location.reload();
@@ -231,7 +231,7 @@ function startConfetti() {
         this.rotation = Math.random() * 360;
     }
 
-    Particle.prototype.update = function() {
+    Particle.prototype.update = function () {
         this.y += this.speed;
         this.rotation += this.speed / 2;
         if (this.y > canvas.height) {
@@ -240,7 +240,7 @@ function startConfetti() {
         }
     };
 
-    Particle.prototype.draw = function() {
+    Particle.prototype.draw = function () {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation * Math.PI / 180);
