@@ -5,17 +5,17 @@ let materiasMap = new Map();
 const grupos = {
     ingenieria: ["Electromecanica", "Industrial", "Quimica"],
     licenciatura: [
-        "Administracion De Empresas", "Administracion Publica", "Comunicaciones",
-        "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial",
-        "Economia Politica", "Educacion", "Estudios Politicos", "Logistica", "Politica Social",
-        "Sistemas", "Sociologia", "Urbanismos"
+        "Administracion De Empresas", "Administracion Publica", "Comunicaciones", 
+        "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial", 
+        "Economia Politica", "Educacion", "Estudios Politicos", "Politica Social", 
+        "Sistemas", "Urbanismos"
     ],
     profesorado: [
-        "Filosofia", "Fisica", "Geografia", "Historia", "Literatura",
+        "Filosofia", "Fisica", "Geografia", "Historia", "Literatura", 
         "Matematica", "Prof Economia"
     ],
     tecnicatura: [
-        "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica",
+        "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica", 
         "Tec. Quimica"
     ]
 };
@@ -34,6 +34,15 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 let carreraActual = null;
 let progresoActual = new Set();
 
+// esto para detectar si en el json de carreras.js aparece algo así: < "87:39" >
+function esMateriaCompuesta(materia) { 
+    return typeof materia === 'string' && materia.includes(':');
+}
+// con esto obtenemos las materias < 87 > y < 39 > del ejemplo anterior
+function parseMateria(materia) {
+    return materia.split(':').map(id => parseInt(id, 10));
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const [carrerasResponse, materiasResponse] = await Promise.all([
@@ -42,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]);
         carrerasData = await carrerasResponse.json();
         materiasData = await materiasResponse.json();
-
+        
         materiasData.forEach(materia => {
             materiasMap.set(materia.id, materia.nombre);
         });
@@ -56,8 +65,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
                         a.href = "#";
-                        a.textContent = carreraData.nombre.replace(/_/g, " ");
-                        a.dataset.carrera = carreraData.nombre;
+                        a.textContent = carreraData.nombre.replace(/_/g, " "); 
+                        a.dataset.carrera = carreraData.nombre; 
                         a.addEventListener('click', alSeleccionarCarrera);
                         li.appendChild(a);
                         listaEl.appendChild(li);
@@ -90,24 +99,89 @@ function mostrarDetalle(nombreCarrera) {
 
     nombreCarreraEl.textContent = carreraActual.nombre.replace(/_/g, " ");
     listaMateriasEl.innerHTML = '';
-    carreraActual.materias.forEach((materiaId, index) => {
+    carreraActual.materias.forEach((materiaRaw, index) => {
         const li = document.createElement('li');
         li.className = 'materia-item';
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `materia-${index}`;
-        checkbox.dataset.materiaId = materiaId;
-        checkbox.checked = progresoActual.has(materiaId);
+        /* ===== Materia compuesta ===== */
+        if (esMateriaCompuesta(materiaRaw)) {
+            const ids = parseMateria(materiaRaw);
 
-        const label = document.createElement('label');
-        label.htmlFor = `materia-${index}`;
-        label.textContent = materiasMap.get(materiaId);
+            const container = document.createElement('div');
+            container.className = 'materia-compuesta';
 
-        checkbox.addEventListener('change', alMarcarMateria);
+            const select = document.createElement('select');
+            select.className = 'materia-select';
 
-        li.appendChild(checkbox);
-        li.appendChild(label);
+            ids.forEach(id => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = materiasMap.get(id) ?? `Materia ${id}`;
+                select.appendChild(opt);
+            });
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+
+            const label = document.createElement('label');
+            label.className = 'materia-label';
+
+            const aprobada = [...progresoActual].find(id => ids.includes(id));
+            if (aprobada) {
+                select.value = aprobada;
+                checkbox.checked = true;
+            }
+
+            label.textContent = materiasMap.get(parseInt(select.value, 10));
+
+            // cambia la opción seleccionada en el select lol
+            select.addEventListener('change', () => {
+                label.textContent = materiasMap.get(parseInt(select.value, 10));
+
+                if (!checkbox.checked) return;
+
+                ids.forEach(id => progresoActual.delete(id));
+                progresoActual.add(parseInt(select.value, 10));
+                guardarProgreso(carreraActual.nombre, progresoActual);
+            });
+
+            // checkbox como las demás
+            checkbox.addEventListener('change', () => {
+                ids.forEach(id => progresoActual.delete(id));
+
+                if (checkbox.checked) {
+                    progresoActual.add(parseInt(select.value, 10));
+                }
+
+                guardarProgreso(carreraActual.nombre, progresoActual);
+                actualizarProgresoVisual();
+            });
+
+            container.appendChild(checkbox);
+            container.appendChild(label); // este label es el que pone la materia seleccionada
+            container.appendChild(select);
+            li.appendChild(container);
+        }
+
+
+        /* ===== Materia normal ===== */
+        else {
+            const materiaId = parseInt(materiaRaw, 10);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.dataset.materiaId = materiaId;
+            checkbox.checked = progresoActual.has(materiaId);
+
+            const label = document.createElement('label');
+            label.textContent = materiasMap.get(materiaId);
+
+            checkbox.addEventListener('change', alMarcarMateria);
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+        }
+
         listaMateriasEl.appendChild(li);
     });
 
@@ -121,7 +195,7 @@ function mostrarDetalle(nombreCarrera) {
 function mostrarMenu() {
     detalleCarreraEl.classList.add('hidden');
     menuCarrerasEl.classList.remove('hidden');
-    carreraActual = null;
+    carreraActual = null; 
     progresoActual.clear();
     stopConfetti();
 }
@@ -135,7 +209,7 @@ function alMarcarMateria(e) {
     } else {
         progresoActual.delete(materiaId);
     }
-
+    
     guardarProgreso(carreraActual.nombre, progresoActual);
     sincronizarMateriaEnOtrasCarreras(materiaId, isChecked);
     actualizarProgresoVisual();
@@ -160,11 +234,11 @@ function actualizarProgresoVisual() {
 
     const totalMaterias = carreraActual.materias.length;
     const completadas = progresoActual.size;
-
+    
     const porcentaje = totalMaterias > 0 ? (completadas / totalMaterias) * 100 : 0;
 
     progresoTextoEl.textContent = `Progreso: ${completadas} / ${totalMaterias} materias`;
-
+    
     progresoBarraEl.style.width = `${porcentaje}%`;
     progresoBarraEl.textContent = `${porcentaje.toFixed(1)}%`;
 
@@ -193,7 +267,7 @@ function cargarProgreso(nombreCarrera) {
     if (data) {
         return new Set(JSON.parse(data));
     }
-    return new Set();
+    return new Set(); 
 }
 
 function limpiarProgreso() {
@@ -201,7 +275,7 @@ function limpiarProgreso() {
         "¿Estás seguro de que deseas borrar TODO el progreso guardado?\n" +
         "Esta acción no se puede deshacer."
     );
-
+    
     if (confirmado) {
         localStorage.clear();
         location.reload();
@@ -231,7 +305,7 @@ function startConfetti() {
         this.rotation = Math.random() * 360;
     }
 
-    Particle.prototype.update = function () {
+    Particle.prototype.update = function() {
         this.y += this.speed;
         this.rotation += this.speed / 2;
         if (this.y > canvas.height) {
@@ -240,7 +314,7 @@ function startConfetti() {
         }
     };
 
-    Particle.prototype.draw = function () {
+    Particle.prototype.draw = function() {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation * Math.PI / 180);
