@@ -2306,5 +2306,69 @@
     {
         "id": 578,
         "nombre": "Prácticas de investigación"
+    },
+    {
+        "id": 548,
+        "nombre": "Introducción a la Logística"
+    },
+    {
+        "id": 549,
+        "nombre": "Taller Inicial Obligatorio del Área de Matemática"
+    },
+    {
+        "id": 550,
+        "nombre": "Gestión del Transporte I"
+    },
+    {
+        "id": 551,
+        "nombre": "Gestión Logística I"
+    },
+    {
+        "id": 552,
+        "nombre": "Envases, Embalajes y Manejo de Materiales"
+    },
+    {
+        "id": 553,
+        "nombre": "Tecnología para la Gestión Logística"
+    },
+    {
+        "id": 554,
+        "nombre": "Gestión Logística II"
+    },
+    {
+        "id": 555,
+        "nombre": "Gestión de Almacenes"
+    },
+    {
+        "id": 556,
+        "nombre": "Costos Logísticos"
+    },
+    {
+        "id": 557,
+        "nombre": "Análisis de Datos para la Toma de Decisiones"
+    },
+    {
+        "id": 558,
+        "nombre": "Gestión del Transporte II"
+    },
+    {
+        "id": 559,
+        "nombre": "Marco Legal Logístico"
+    },
+    {
+        "id": 560,
+        "nombre": "Electiva I"
+    },
+    {
+        "id": 561,
+        "nombre": "Gestión Logística III"
+    },
+    {
+        "id": 562,
+        "nombre": "Proyecto Logístico"
+    },
+    {
+        "id": 563,
+        "nombre": "Electiva II"
     }
 ]
