@@ -7,12 +7,14 @@ const grupos = {
     licenciatura: [
         "Administracion De Empresas", "Administracion Publica", "Comunicaciones",
         "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial",
-        "Economia Politica", "Educacion", "Estudios Politicos", "Logistica", "Politica Social",
+        "Economia Politica", "Educacion", "Estudios Politicos", "Filosofia", "Logistica", "Politica Social",
         "Sistemas", "Sociologia", "Urbanismos"
     ],
     profesorado: [
-        "Filosofia", "Fisica", "Geografia", "Historia", "Literatura",
-        "Matematica", "Prof Economia"
+        "Fisica", "Geografia", "Historia", "Literatura",
+        "Matematica", "Economia",
+        "Profesorado Universitario de Educación Superior en Educación",
+        "Profesorado Universitario de Educación Superior en Filosofía"
     ],
     tecnicatura: [
         "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica",

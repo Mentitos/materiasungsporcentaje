@@ -2370,5 +2370,105 @@
     {
         "id": 563,
         "nombre": "Electiva II"
+    },
+    {
+        "id": 579,
+        "nombre": "Cálculo II"
+    },
+    {
+        "id": 580,
+        "nombre": "Álgebra I"
+    },
+    {
+        "id": 581,
+        "nombre": "Geometría I"
+    },
+    {
+        "id": 582,
+        "nombre": "Enseñanza de la Matemática I"
+    },
+    {
+        "id": 583,
+        "nombre": "Geometría II"
+    },
+    {
+        "id": 584,
+        "nombre": "Enseñanza de la Matemática II"
+    },
+    {
+        "id": 585,
+        "nombre": "Álgebra II"
+    },
+    {
+        "id": 586,
+        "nombre": "Residencia II en Matemática"
+    },
+    {
+        "id": 587,
+        "nombre": "Estadística"
+    },
+    {
+        "id": 588,
+        "nombre": "Análisis Matemático"
+    },
+    {
+        "id": 589,
+        "nombre": "Análisis Numérico"
+    },
+    {
+        "id": 590,
+        "nombre": "Taller Inicial Orientado: Ciencias Sociales o Ciencias Humanas"
+    },
+    {
+        "id": 591,
+        "nombre": "Fundamentos de Psicología"
+    },
+    {
+        "id": 592,
+        "nombre": "Perspectiva de géneros: aportes y debates"
+    },
+    {
+        "id": 593,
+        "nombre": "Residencia I en Educación"
+    },
+    {
+        "id": 594,
+        "nombre": "Taller Investigación Educativa I"
+    },
+    {
+        "id": 595,
+        "nombre": "Seminario Tecnología y Educación"
+    },
+    {
+        "id": 596,
+        "nombre": "Seminario Formación y Trabajo Docente"
+    },
+    {
+        "id": 597,
+        "nombre": "Seminario Organización Escolar"
+    },
+    {
+        "id": 598,
+        "nombre": "Seminario Sujetos, Diversidad y Accesibilidad"
+    },
+    {
+        "id": 599,
+        "nombre": "Residencia II en Educación"
+    },
+    {
+        "id": 600,
+        "nombre": "Taller de Desarrollo Profesional: Asesoramiento Institucional"
+    },
+    {
+        "id": 601,
+        "nombre": "Taller de Desarrollo Profesional: Orientación Escolar"
+    },
+    {
+        "id": 602,
+        "nombre": "Portugués III"
+    },
+    {
+        "id": 603,
+        "nombre": "Residencia II en Filosofía"
     }
 ]
