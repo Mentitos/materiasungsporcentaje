@@ -2,25 +2,7 @@ let carrerasData = [];
 let materiasData = [];
 let materiasMap = new Map();
 
-const grupos = {
-    ingenieria: ["Electromecanica", "Industrial", "Quimica"],
-    licenciatura: [
-        "Administracion De Empresas", "Administracion Publica", "Comunicaciones",
-        "Cultura Y Lenguajes Artisticos", "Ecologia", "Economia Industrial",
-        "Economia Politica", "Educacion", "Estudios Politicos", "Filosofia", "Logistica", "Politica Social",
-        "Sistemas", "Sociologia", "Urbanismos"
-    ],
-    profesorado: [
-        "Fisica", "Geografia", "Historia", "Literatura",
-        "Matematica", "Economia",
-        "Profesorado Universitario de Educación Superior en Educación",
-        "Profesorado Universitario de Educación Superior en Filosofía"
-    ],
-    tecnicatura: [
-        "Automatizacion Y Control", "Informatica", "Sist. De Info. Geografica",
-        "Tec. Quimica"
-    ]
-};
+
 
 const menuCarrerasEl = document.getElementById('menu-carreras');
 const detalleCarreraEl = document.getElementById('detalle-carrera');
@@ -51,32 +33,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             fetch('carreras.json'),
             fetch('materias.json')
         ]);
-        carrerasData = await carrerasResponse.json();
+        const carrerasPorGrupo = await carrerasResponse.json();
         materiasData = await materiasResponse.json();
 
         materiasData.forEach(materia => {
             materiasMap.set(materia.id, materia.nombre);
         });
 
-        for (const [grupo, carreras] of Object.entries(grupos)) {
-            const listaEl = document.getElementById(`lista-${grupo}`);
-            if (listaEl) {
-                carreras.forEach(nombreCarrera => {
-                    const carreraData = carrerasData.find(c => c.nombre === nombreCarrera);
-                    if (carreraData) {
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = "#";
-                        a.textContent = carreraData.nombre.replace(/_/g, " ");
-                        a.dataset.carrera = carreraData.nombre;
-                        a.addEventListener('click', alSeleccionarCarrera);
-                        li.appendChild(a);
-                        listaEl.appendChild(li);
-                    } else {
-                        console.warn(`La carrera "${nombreCarrera}" definida en los grupos no se encontró en carrerasData.`);
-                    }
-                });
-            }
+        carrerasData = Object.values(carrerasPorGrupo).flat();
+
+        const contenedorCategorias = document.getElementById('contenedor-categorias');
+
+        for (const [grupo, carrerasDelGrupo] of Object.entries(carrerasPorGrupo)) {
+            if (carrerasDelGrupo.length === 0) continue;
+
+            const seccion = document.createElement('div');
+            seccion.className = 'seccion-carrera';
+
+            const titulo = document.createElement('h2');
+            titulo.textContent = grupo;
+            seccion.appendChild(titulo);
+
+            const ul = document.createElement('ul');
+            carrerasDelGrupo.forEach(carreraData => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = "#";
+                a.textContent = carreraData.nombre.replace(/_/g, " ");
+                a.dataset.carrera = carreraData.nombre;
+                a.addEventListener('click', alSeleccionarCarrera);
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            seccion.appendChild(ul);
+            contenedorCategorias.appendChild(seccion);
         }
     } catch (error) {
         console.error('Error al cargar los datos:', error);
