@@ -1,4 +1,22 @@
 {
-    "monto": 0,
-    "meta": 50000
+    "titulo": "Metas de la Comunidad",
+    "monto_actual": 0,
+    "metas": [
+        {
+            "nombre": "Gracias por el aguante",
+            "monto": 15000
+        },
+        {
+            "nombre": "Mas y mejores opciones de personalizacion",
+            "monto": 35000
+        },
+        {
+            "nombre": "Apartado para links  de apuntes",
+            "monto": 75000
+        },
+        {
+            "nombre": "Intento hacer un apartado para calificar maestros como en la UTN",
+            "monto": 150000
+        }
+    ]
 }

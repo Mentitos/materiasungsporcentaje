@@ -15,6 +15,20 @@ const btnLimpiarCacheEl = document.getElementById('btn-limpiar-cache');
 const mensajeMotivacionalEl = document.getElementById('mensaje-motivacional');
 const confettiCanvas = document.getElementById('confetti-canvas');
 
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCopiarAlias = document.getElementById('btn-copiar-alias');
+    if (btnCopiarAlias) {
+        btnCopiarAlias.addEventListener('click', () => {
+            const alias = "ARDOR.BICHO.PILOTO";
+            navigator.clipboard.writeText(alias).then(() => {
+                const tooltip = document.getElementById('tooltip-copiado');
+                tooltip.classList.remove('hidden');
+                setTimeout(() => tooltip.classList.add('hidden'), 2000);
+            });
+        });
+    }
+});
+
 let carreraActual = null;
 let progresoActual = new Set();
 
@@ -75,7 +89,72 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     btnVolverEl.addEventListener('click', mostrarMenu);
     btnLimpiarCacheEl.addEventListener('click', limpiarProgreso);
+
+    cargarDonaciones();
 });
+
+async function cargarDonaciones() {
+    try {
+        const response = await fetch('donaciones.json');
+        const data = await response.json();
+        renderizarDonaciones(data);
+    } catch (error) {
+        console.error('Error al cargar donaciones:', error);
+    }
+}
+
+function renderizarDonaciones(data) {
+    const { titulo, monto_actual, metas } = data;
+
+    const container = document.getElementById('donaciones-container');
+    const tituloEl = document.getElementById('donaciones-titulo');
+    const porcentajeEl = document.getElementById('donaciones-porcentaje');
+    const barraEl = document.getElementById('donaciones-barra');
+    const markersEl = document.getElementById('donaciones-metas-markers');
+    const montoMinEl = document.getElementById('donaciones-monto-min');
+    const montoMaxEl = document.getElementById('donaciones-monto-max');
+
+    if (!container || !metas || metas.length === 0) return;
+
+    container.classList.remove('hidden');
+    tituloEl.textContent = titulo;
+
+    const maxMonto = metas[metas.length - 1].monto;
+    const porcentajeNum = (monto_actual / maxMonto) * 100;
+    const porcentajeFinal = Math.min(porcentajeNum, 100);
+
+    barraEl.style.width = `${porcentajeFinal}%`;
+    porcentajeEl.textContent = `${porcentajeFinal.toFixed(1)}%`;
+
+    montoMinEl.textContent = `${monto_actual.toLocaleString('es-AR')} $`;
+    montoMaxEl.textContent = `Meta: ${maxMonto.toLocaleString('es-AR')} $ ARS`;
+
+    markersEl.innerHTML = '';
+    const listaMetasEl = document.getElementById('donaciones-metas-lista');
+    if (listaMetasEl) listaMetasEl.innerHTML = '<h4>Próximos Objetivos:</h4>';
+
+    metas.forEach(meta => {
+        const posicion = (meta.monto / maxMonto) * 100;
+        const reached = monto_actual >= meta.monto;
+
+        if (meta.monto !== maxMonto) {
+            const dot = document.createElement('div');
+            dot.className = `meta-dot ${reached ? 'reached' : ''}`;
+            dot.style.left = `${posicion}%`;
+            markersEl.appendChild(dot);
+        }
+
+        if (listaMetasEl) {
+            const item = document.createElement('div');
+            item.className = `meta-list-item ${reached ? 'reached' : ''}`;
+            item.innerHTML = `
+                <span class="meta-name">${reached ? '✅' : '🎯'} ${meta.nombre}</span>
+                <span class="meta-amount">$${meta.monto.toLocaleString('es-AR')}</span>
+            `;
+            listaMetasEl.appendChild(item);
+        }
+    });
+}
 
 function alSeleccionarCarrera(e) {
     e.preventDefault();
@@ -95,7 +174,6 @@ function mostrarDetalle(nombreCarrera) {
         const li = document.createElement('li');
         li.className = 'materia-item';
 
-        /* ===== Materia compuesta ===== */
         if (esMateriaCompuesta(materiaRaw)) {
             const ids = parseMateria(materiaRaw);
 
@@ -126,7 +204,6 @@ function mostrarDetalle(nombreCarrera) {
 
             label.textContent = materiasMap.get(parseInt(select.value, 10));
 
-            // cambia la opción seleccionada en el select lol
             select.addEventListener('change', () => {
                 label.textContent = materiasMap.get(parseInt(select.value, 10));
 
@@ -137,7 +214,6 @@ function mostrarDetalle(nombreCarrera) {
                 guardarProgreso(carreraActual.nombre, progresoActual);
             });
 
-            // checkbox como las demás
             checkbox.addEventListener('change', () => {
                 ids.forEach(id => progresoActual.delete(id));
 
@@ -150,13 +226,12 @@ function mostrarDetalle(nombreCarrera) {
             });
 
             container.appendChild(checkbox);
-            container.appendChild(label); // este label es el que pone la materia seleccionada
+            container.appendChild(label);
             container.appendChild(select);
             li.appendChild(container);
         }
 
 
-        /* ===== Materia normal ===== */
         else {
             const materiaId = parseInt(materiaRaw, 10);
 

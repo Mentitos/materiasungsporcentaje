@@ -44,7 +44,58 @@
             </ul>
         </div>
 
+        <div id="proyecto-info-card">
+            <span class="badge">NUEVA VERSIÓN</span>
+            <h3>Agenda Universitaria UNGS</h3>
+            <p>Este proyecto ha evolucionado a una aplicación completa de agenda universitaria, sin anuncios y con todos
+                los datos de las materias de la UNGS precargados.</p>
+            <a href="https://mentitos.github.io/horarios-pagina/" target="_blank" class="btn-proyecto">Conocer la nueva
+                versión &rarr;</a>
+        </div>
+
+        <div id="donaciones-container" class="hidden">
+            <h2 id="donaciones-main-titulo">Meta de la Comunidad</h2>
+            <div id="donaciones-card">
+                <div class="donaciones-header">
+                    <span id="donaciones-titulo"></span>
+                    <span id="donaciones-porcentaje">0.0%</span>
+                </div>
+                <div class="donaciones-progress-container">
+                    <div id="donaciones-barra"></div>
+                    <div id="donaciones-metas-markers"></div>
+                </div>
+                <div class="donaciones-footer">
+                    <span id="donaciones-monto-min">0 $</span>
+                    <span id="donaciones-monto-max">Meta: 0 $ ARS</span>
+                </div>
+                <p id="donaciones-descripcion">Con tu ayuda puedo cubrir los costos del servidor y seguir mejorando la
+                    app con las funciones que me pidan. ¡Gracias por el aguante!</p>
+
+                <div id="donaciones-metas-lista">
+                    <!-- Las metas se cargarán aca -->
+                </div>
+            </div>
+
+            <div id="alias-container">
+                <p class="alias-label">Apoyar el proyecto vía Transferencia (Alias):</p>
+                <div class="alias-box">
+                    <span id="alias-text">ARDOR.BICHO.PILOTO</span>
+                    <button id="btn-copiar-alias" title="Copiar Alias">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copiar</span>
+                    </button>
+                    <div id="tooltip-copiado" class="hidden">¡Copiado!</div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="footer-creditos">
+
             <p>
                 Sitio web creado por:&nbsp;
                 <a href="https://mentitos.github.io/Presentacion/" target="_blank" rel="noopener noreferrer">Matias
