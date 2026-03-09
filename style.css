@@ -246,184 +246,174 @@ h1 {
     cursor: pointer;
 
     color: transparent;
-    /* oculta texto */
+
 }
 
 .materia-select option {
     color: initial;
 }
 
-/* Flechita visible */
 .materia-select {
-    background-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>\
-<polyline points='6 9 12 15 18 9'/>\
-</svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 1em;
 }
 
-/* ===== Sistema de Donaciones (Estilo Meta de la Comunidad) ===== */
 #donaciones-container {
     margin: 40px 20px;
     text-align: left;
 }
 
 #donaciones-main-titulo {
-    font-size: 14px;
-    color: #ffffff;
-    font-weight: bold;
-    text-transform: none;
+    font-size: 15px;
+    color: #2d3748;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     border-bottom: none;
-    margin: 0 0 10px 5px;
+    margin: 0 0 12px 5px;
     padding: 0;
     text-align: left;
 }
 
 #donaciones-card {
-    background-color: #1a2230;
-    /* Fondo oscuro azulado */
-    border: 1px solid #2d3748;
-    border-radius: 8px;
-    padding: 20px;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    border: 2px solid #1a202c;
+    border-radius: 16px;
+    padding: 24px;
+    color: #2d3748;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
 }
 
 .donaciones-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 #donaciones-porcentaje {
-    color: #4299e1;
-    /* Azul brillante */
+    color: #3182ce;
+    font-family: monospace;
+    font-size: 16px;
 }
 
 .donaciones-progress-container {
     position: relative;
-    height: 12px;
-    background-color: #0d1117;
-    border-radius: 6px;
-    margin-bottom: 12px;
+    height: 14px;
+    background-color: #edf2f7;
+    border-radius: 20px;
+    margin-bottom: 16px;
     overflow: hidden;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 #donaciones-barra {
     height: 100%;
     width: 0%;
-    background-color: #2b3544;
-    /* Color de la barra llena sutil */
-    background-image: linear-gradient(90deg, #1a202c, #4299e1);
-    border-radius: 6px;
-    transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    background: linear-gradient(90deg, #63b3ed, #3182ce);
+    border-radius: 20px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .donaciones-footer {
     display: flex;
     justify-content: space-between;
-    font-size: 13px;
-    font-weight: bold;
-    color: #e2e8f0;
-    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 20px;
 }
 
 #donaciones-descripcion {
-    font-size: 11px;
-    color: #a0aec0;
+    font-size: 13px;
+    color: #718096;
     font-style: italic;
     text-align: center;
-    margin: 15px 0 20px 0;
-    line-height: 1.4;
-    opacity: 0.8;
+    margin: 0 0 24px 0;
+    line-height: 1.6;
+    padding: 0 10px;
 }
 
-#donaciones-metas-lista {
-    border-top: 1px solid #2d3748;
-    padding-top: 15px;
-    margin-top: 15px;
-    text-align: left;
-}
-
-#donaciones-metas-lista h4 {
-    font-size: 13px;
-    color: #4299e1;
-    margin: 0 0 10px 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.meta-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    margin-bottom: 5px;
-    background-color: #0d1117;
-    border-radius: 6px;
-    font-size: 13px;
-    color: #cbd5e0;
-    transition: background-color 0.2s;
-}
-
-.meta-list-item.reached {
-    border-left: 3px solid #48bb78;
-    background-color: #1c2d24;
-    color: #ffffff;
-}
-
-.meta-list-item:not(.reached) {
-    border-left: 3px solid #2d3748;
-}
-
-.meta-name {
-    font-weight: 500;
-    flex: 1;
-    margin-right: 15px;
-}
-
-.meta-amount {
-    font-family: monospace;
-    font-weight: bold;
-    color: #4299e1;
-}
-
-/* Marcadores como puntos sutiles */
-#donaciones-metas-markers {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
 
 .meta-dot {
     position: absolute;
     top: 50%;
-    width: 4px;
-    height: 4px;
-    background-color: #4a5568;
+    width: 5px;
+    height: 5px;
+    background-color: #cbd5e0;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
 
 .meta-dot.reached {
-    background-color: #4299e1;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+
+#donaciones-metas-lista {
+    border-top: 2px solid #1a202c;
+    padding-top: 20px;
+    text-align: left;
+}
+
+#donaciones-metas-lista h4 {
+    font-size: 13px;
+    color: #2b6cb0;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.meta-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background-color: #f7fafc;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #4a5568;
+    border: 1.5px solid #2d3748;
+    transition: all 0.2s ease;
+}
+
+.meta-list-item.reached {
+    background-color: #f0fff4;
+    border-color: #276749;
+    color: #22543d;
+}
+
+.meta-list-item:not(.reached):hover {
+    background-color: #edf2f7;
+    border-color: #e2e8f0;
+}
+
+.meta-name {
+    font-weight: 600;
+    flex: 1;
+}
+
+.meta-amount {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-weight: 700;
+    color: #3182ce;
+    margin-left: 10px;
 }
 
 #alias-container {
     margin-top: 30px;
     padding: 20px;
     background-color: #f8fafc;
-    /* Fondo gris muy claro/azulado */
     border-top: 1px solid #e2e8f0;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -444,7 +434,7 @@ h1 {
     background-color: #ffffff;
     padding: 10px 18px;
     border-radius: 12px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #1a202c;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     max-width: 100%;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -522,7 +512,6 @@ h1 {
 }
 
 
-/* ===== Card de Información del Proyecto ===== */
 #proyecto-info-card {
     margin: 30px 20px;
     color: white;
