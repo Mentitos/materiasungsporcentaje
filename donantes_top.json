@@ -4,11 +4,12 @@
     "monto": 1000
   },
   {
-    "nombre": "Felipe Duran",
-    "monto": 50
-  },
-  {
+    
     "nombre": "pruebita",
     "monto": 100
+  },
+  {
+    "nombre": "Felipe Duran",
+    "monto": 50
   }
 ]
