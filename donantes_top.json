@@ -3,7 +3,10 @@
     "nombre": "Juan Maddonni",
     "monto": 1000
   },
-  
+  {
+    "nombre": "pruebita",
+    "monto": 100
+  },
   {
     "nombre": "Felipe Duran",
     "monto": 50
