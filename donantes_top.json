@@ -6,5 +6,9 @@
   {
     "nombre": "Felipe Duran",
     "monto": 50
+  },
+  {
+    "nombre": "pruebita",
+    "monto": 100
   }
 ]
